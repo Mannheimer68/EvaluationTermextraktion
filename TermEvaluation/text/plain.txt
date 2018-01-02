@@ -1,0 +1,503 @@
+Quantification of Materials
+Run the GDC Quantificator
+GDC performs 3 main steps in the quantification process.
+The quantification process is based on the workload entered and on the settings made on customer environment level.
+The Quantificator calculates 
+the materials which are required to perform the entered number of reportables or tests
+the optimal pack sizes of each material
+the boxes for pricing parameters (= configuration frames)
+The result of the quantification process is a material list.
+The material list contains materials required to run the tests.
+The quantificator runs automatically before the material list or the box configuration window is displayed or the price finding process runs.
+Click the "Quantificate All" menu item from the "tools" menu to start the quantificator manually.
+A red bubble  ahead of a system indicates that the quantificator needs to run (see the picture below).
+Click the "Quantificate All" menu item from the "Tools" menu.
+RESULT
+The Quantificator starts to run.
+Errors and warnings are displayed in a popup window. 
+The admin tool allows to configure whether or not errors or warnings are to be displayed (e.g. for zero quantities in quantification).
+The pictures below show examples of a warning and a fatal error.
+If an error occurs, the icon ahead of the affected instrument tab turns red.
+The quantificator log saves errors and warnings to identify possibly required corrections. 
+RESULT
+If no error occurred during quantification, the material list is created and configuration frames are built.
+If the quantification was successful, the red bubble ahead of an instrument in the navigation tree disappears.
+Verify the workload screen.
+The column "EFF" in the workload screen allows two different indicators for workload efficiency.
+A green symbol and a red symbol reflect the efficiency of the entered number of reportables or tests.
+The red symbol indicates a warning.
+GDC compares the quotient between the quantity of delivered tests and the quantity of theoretical reportables with a given limit.
+The symbol turns red if the quotient is higher than the limit.
+The symbol turns green if the quotient is lower than the limit.
+The quotient limits are maintainable in the admin tool.
+Modify environment settings and workload allocation in the workload screen, and rerun the quantificator.
+RESULT
+The material list is recalculated, and boxes are built.
+Material List
+The material list shows a consolidated view of all materials from the scenario.
+The "Origin" field in the material list shows the source from which the material was added to the scenario.
+GDC offers the material list on different consolidation levels (e.g. all materials of the scenario, or materials per test).
+The consolidation level is selectable by the user by using pre-configured list views.
+The user can remove materials from the scenario, or modify their quantity.
+In this way, the user can overwrite the automatically calculated configuration to meet customer’s needs.
+Note: Lease and service are not part of the material list.
+GDC provides multiple possibilities to exclude, to substitute, or to modify materials from the deal. 
+Exclude materials before running the quantificator
+on instrument level (see "Material Exclusion" section)
+on system level (see "Associated Item" section)
+Remove materials from or change material quantities in a deal after the quantificator ran
+on multiple levels (see "Material List" section)
+Substitute materials or pack sizes
+on test level for reagents (see "Test Related Materials" section)
+Include or exclude optional CCC materials
+on test level (see "Test Related Materials" section)
+on deal level (see "Test-Related Materials" section)
+Change optional CCC materials to non-committed materials
+on deal level (see "Test Related Materials" section).
+Description of the Material List Screen
+Open the Material List Screen
+There are three different ways to open the material list:
+Click "Material List" in the "Navigation" menu
+Press "Ctrl+M" 
+Click "Material List" from the "View" menu
+If a default view is available for the material list, the material list shows the default list view.
+Otherwise, the material list shows the list view selected in the drop-down list.
+The user is able to define the default view via the right-click context menu in the drop-down list.
+Click "Material List" in the navigation tree to open the material list.
+RESULT
+If it is necessary, GDC runs the quantificator, and opens the material list.
+The consolidation grid (upper grid) in the material list displays objects based on the consolidation level chosen from the drop-down list (e.g. scenarios are shown if "All materials" is selected in the drop-down list, or tests with workload are displayed if "Test – show all materials" is selected in the drop-down list).
+The materials grid (lower grid) in the material list contains the list of materials.
+The materials are consolidated according to the consolidation level selected in the consolidation grid (e.g. all materials assigned to a corresponding scenario are displayed in the materials grid if a scenario is selected in the consolidation grid; if a test is selected in the consolidation grid, all materials assigned to this test are shown in the materials grid).
+Materials can be assigned to different tests with different quantities.
+The material list shows only the material's quantity assigned to the selected test.
+Additionally, system settings of the selected view might filter the material list (e.g. only annual materials might be listed).
+If the user tries to open the material list, but the quantificator ran erroneous (e.g. because the scenario is inactive), the following warning is displayed.
+If the user tries to open the material list, but GDC detects invalid test data, the following error is displayed.
+If GDC detects invalid test data, restart the quantificator by clicking "Quantificate All" from the "Tools" menu.
+Selection of Material List Views
+Materials can be displayed according to a selected consolidation level.
+E.g. GDC is able to show all materials of the scenario with consolidated quantities or only materials and quantities assigned to a selected test.
+The user determines the consolidation level by choosing an entry from the drop-down list which is located above the consolidation grid.
+The following consolidation levels might be available:
+"Scenario"
+"Pricing Customer"
+"System Group"
+"System"
+"Instrument"
+"Pricing Parameter"
+"Test"
+The available consolidation levels are based on the GDC deal structure.
+Note: Views can be maintained in the admin tool. 
+The consolidation level selected in the drop-down list can be extended by filter settings.
+E.g. the material list displays only corresponding test-related annual materials if the consolidation level "Test – Show Annual Materials" is chosen (for which the Annual flag is set to TRUE).
+The following filter settings might be available:
+"Annual materials"
+"Non-annual materials"
+"Uncommitted materials"
+"Non-uncommitted materials"
+Note: Filter settings can be maintained in the admin tool.
+Select an option from the drop-down list to determine the consolidation and filter settings of the material list,
+RESULT
+Each row in the materials grid represents an object assigned to the level determined by the selected list view.
+In the example above, all instruments of the scenario are listed in the consolidation grid.
+The unsigned row in the materials grid serves as container group for all available materials not assigned to objects of the selected consolidation level. 
+Consolidation Grid
+The consolidation grid of the material list serves two purposes:
+The consolidation grid defines the consolidation level for the materials
+The consolidation grid provides workload information for each object on the corresponding consolidation level.
+All quantities (#) in the consolidation grid are annual values.
+Explanation of quantity fields:
+"# Samples"
+The "samples" field represents the quantity of annual samples. 
+If the workload allocation was entered per reportables, GDC takes the quantity of annual samples from the workload allocation. 
+If the workload allocation was entered per test, GDC calculates the quantity of annual samples based on the quantity of customer tests.
+This calculation uses the quantity of QC tests, the quantity of calibration runs, the quantity of reruns, and the quantity of correction tests.
+"# Reportables"
+The "reportables" field represents the quantity of annual reportables.
+The quantity of annual reportables is calculated by the quantificator based on workload allocation.
+If the pool size is equal to 1, the quantity of reportables equals the quantity of annual samples.
+If the pool size is greater than 1, the quantity of reportables is calculated as quantity of annual samples divided by the pool size.
+Additionally, the quantity of reportables contains the product of the quantity of estimated positive pool tests and the pool size.
+"# q. Tests"
+The "q tests" field represents the annual quantificated tests.
+Annual quantificated tests are calculated by the quantificator based on workload allocation.
+If workload allocation was entered per tests, GDC loads the quantity of annual tests from the workload screen.
+If workload allocation was entered per reportables, GDC converts the quantity of annual reportables to the quantity of tests, considering the quantity of QC tests, calibration runs, reruns, and correction tests.
+The batch size, the quantity of controls per batch, and the configuration setting "QC tests are included in batch size" are considered for MD instruments.
+The quantity of quantificated tests contains the quantity of extra tests.
+The GDC Quantificator uses the quantity of quantificated tests to calculate the quantity of kits per year, considering decomposition, stability handling, and rounding mode.
+For further information see Section "Payment Model Test".
+"# d. Tests"
+The "d. tests" field represents delivered tests.
+Delivered tests consider the quantity of extra tests and the maximum quantity of tests which is theoretically obtainable from the reagent's quantity of kits.
+For further information see Section "Payment Model Test".
+There exists a difference between the quantity of a delivered test displayed in the material list and the quantity of a delivered test used in the pricing area.
+If the reagent is not the primary material, the material list's quantity of delivered tests is based on the reagent.
+If the primary material is not a reagent, the pricing area's quantity of delivered test is based on the primary material.
+"# QC Tests"
+The "QC tests" field represents the annual quantity of quality control tests calculated by GDC based on the deal-specific customer environment data.
+Depending on system settings made in the admin tool, an optimization mode might be available for low workload.
+The admin tool allows to configure if the optimization mode is applied.
+The batch size, the quantity of controls per batch, and the configuration setting "QC tests are included in batch size" are considered for MD instruments.
+If a quantity of quality control tests was entered in the workload allocation, GDC loads this quantity, and skips calculation.
+"# Calibration"
+The "calibration" field represents the annual quantity of calibration tests.
+The annual quantity of calibration tests is are calculated by GDC based on the quantity of calibration events per year, the quantity of calibration steps, and the quantity of calibration tests (e.g. duplicate measurements are done on all CC/IM instruments for all parameters).
+If the quantity of calibration steps was not entered (calibration kind = "unknown"), a preconfigured default value is used.
+The quantity of calibration runs is loaded from the master data of the test application.
+Furthermore, the quantity of cells or rotors is considered in the calculation of the annual quantity of calibration tests too.
+If a quantity of calibration tests was entered in the workload allocation, GDC loads this quantity, and skips calculation.
+If a quantity of events was entered on the workload allocation, the quantity of calibration tests is calculated as product of the quantity of events, the quantity of calibration steps, and the quantity of tests per calibration.
+Detailed information about the calculation of the quantity of calibration tests is available in the quantificator log for test.
+"# Reruns"
+The "reruns" field represents the annual quantity of test reruns.
+The annual quantity of test reruns is calculated by GDC and interpretes the rerun rate of the deal-specific customer environment.
+If the annual quantity of test reruns was entered in the workload allocation, GDC loads this quantity, and skips calculation.
+"# Extra Testruns"
+The "extra testruns" field represents the quantity of extra tests.
+Extra tests are used as a buffer for unplanned tests.
+The quantity of quantificated tests contains the quantity of extra tests.
+Furthermore, the calculation of the quantity of delivered tests considers the quantity of extra tests.
+The values and units for extra testruns are entered in the workload allocation, in the expert area or in the environment area.
+"# Rnd. Corr"
+corr" field represents the annual rounding corrections.
+Annual rounding corrections comprise the quantity of additional MD tests caused by rounding effects of the batch modes "No optimization" or "Manual Batch Entry".
+For further information regarding rounding in MD tests see Section "MD Quantification".
+"# Corrections"
+The "corrections" field represents the annual quantity of correction tests.
+The annual quantity of correction tests is calculated by GDC and considers the correction factor of the deal-specific customer environment.
+# Correction Tests = 
+(QC tests per year + # reportables + # reruns + # calibrations) x correction factor %
+If the consolidation level equals the box level, the test aggregation algorithm "Max" is not considered in the pricing area.
+As a result, the quantity of tests or reportables might be different compared to the quantity of tests or reportables in PMR/PMT screen.
+The quantification of materials is not affected by this behavior.
+For further information about the deal-specific customer environment see Section "Configure the Customer’s Environment".
+Materials Grid
+The materials grid in the lower part of the material list contains materials depending on the selected consolidation level and the filter settings of the material list view.
+The user can change the quantity of editable materials.
+A white background color in the "quantity" field indicates editable quantities, an orange color indicates already adapted quantities, and a grey color indicates non-editable quantitites.
+The user can exclude materials from the deal (e.g. if the customer uses another control for the test, which is not from Roche).
+Note: 	Quantities are summarized according to the selected consolidation level.
+Quantities are displayed with 2 decimal digits.
+Select an object in the consolidation grid to show the corresponding assigned materials in the materials grid.
+RESULT
+Materials, which are assigned to the object selected in the consolidation grid, are displayed in the materials grid. 
+A default sort order of the material list is configurable in the admin tool.
+Explanation of columns:
+"Report Classification"
+The "report classification" column displays the report classification which the material is assigned to.
+"Family"
+The "family" column displays the product family which the material is assigned to.
+"Origin"
+The "origin" column shows the source from which the material was added to the scenario. 
+
+The following values are applicable as material source:
+Test
+If the material source equals "test", the material is required to run a test.
+Calculated event
+If the material source equals "calculated event", the material is required to execute an event (e.g. system events).
+BGE workload materials
+If the material source equals "BGE workload materials", the material is required to run a BGE tests.
+MPA configuration
+If the material source equals "MPA configuration", the material is calculated based on MPA configuration.
+Annual instrument material
+If the material source equals "annual instrument material", the material is required to use the instrument but is not directly associated with a specific event.
+GDC added the annual instrument material by evaluating the workload of BGE instruments, MPA instruments, and RTD instruments.
+Any autopull category (e.g. TIK)
+If the material source equals any autopull category, the material was added by autopull from the corresponding autopull category.
+Non-configured material
+If the material source equals "non-configured", the material is a non-configured autopull material without an autopull category.
+Text Item
+If the material source equals "text item", the material is a manual autopull without an autopull category.
+Manual entry
+If the material source equals "manual entry", the material is a non-configured manual entry without autopull category.
+Associated item
+If the material source equals "associated item", the material is an associated item not assigned to an autopull category.
+Consumable
+If the material source equals "consumable", the material is a non-test related annual recurring autopull material which is loaded in the deal if workload was entered (depending on configuration settings).
+"Qty"
+The "qty" column represents the annual (or total) quantity of kits.
+The annual quantity of kits is calculated by GDC and is a consolidated quantity without considering rounding settings from the scenario screen.
+Quantities of zero price items are included in the calculation of the quantity of kits.
+If a "quantity" field is editable and is overwritten manually, it's values are highlighted in orange.
+Non-editable "quantity" fields are highlighted grey, editable "quantity" fields are highlighted white.
+"Negotiation Qty"
+The "negotiation qty" column represents the annual (or total) quantity of kits for pricing.
+The annual quantity of kits for pricing is a consolidated quantity considering rounding settings from the scenario screen.
+The calculation of the quantity of kits for pricing does not include zero price items.
+"Origin Qty"
+The "origin qty" column represents the annual (or total) quantity of kits originally calculated by the quantificator.
+The annual quantity of kits is a consolidated quantity without considering rounding settings from the scenario screen.
+The "origin qty" column cannot be changed.
+"FOC"
+The "FOC" column represents the free of charge quantity.
+The reagent handling option in the scenario screen allows to determine the free of charge quantity.
+The free of charge quantity is calculated as follows:
+If tests per kit is greater than 0, FOC qty = Quantity of tests for FOC / tests per kit 
+If tests per kit is equal to 0, FOC qty = quantity of tests for FOC * reagent qty without FOC / quantity of test
+"Annual"
+The "annual" column indicates whether the material is recurring each year for the duration of the scenario.
+"Uncommitted"
+The "uncommitted" column represents whether the material is marked as non-committed material.
+Non-committed materials are not considered in profitability calculation.
+"Record info"
+The "record info" column represents previous activities or key attributes of a line.
+The "record info" column accepts the following values:
+"Primary material"
+If the "record info" column equals "primary material", the material is used as primary material of a pricing parameter or a lot/order box.
+If the quantity of tests per kit was entered in the box configuration window, GDC adds the quantity of tests per kit to the "record info" column.
+"Removed"
+If the "record info" column equals "removed", a material's quantity was removed on the same consolidation level or on a higher consolidation level.
+"Partly removed"
+If the "record info" column equals "partly removed", a material's quantity was removed on a lower level than the current selected consolidation level.
+"Edited"
+If the "record info" column equals "edited", a material's quantity or material's FOC quantity was changed on the same consolidation level or on a higher consolidation level.
+"Partly edited"
+If the "record info" column equals "partly edited", a material's quantity or material's FOC quantity was changed on a lower level (e.g. test level) than the currently selected level (e.g. system level).
+"Pack Size"
+The "pack size" column represents the quantity and it's unit of a corresponding package.
+GDC uses this information for the calculation of the required number of packs.
+Detailed information about pack size can be found in package physics row of the quantificator log.
+Example:  implies 5 bottles (BTL) á 1 ml per pack.
+"Material status"
+The "material status" column represents the DMS Status (Global Roche Material).
+The column is highlighted if the material status is greater than 65 (Central Distribution Ended).
+The highlight color of the material status can be maintained in the admin tool.
+"Delivered qty" and "delivered qty deviation"
+The "delivered qty" column and the "delivered qty deviation" column represent delivered quantities.
+Delivered quantities are described in Section 1.2.1.5.
+Delivered Quantities in the Materials Grid
+The materials grid shows delivered quantities for annual materials if the corresponding master data is maintained.
+Delivered quantities are quantities which were delivered to customers of the current opportunity within the last 12 months.
+Delivered quantities deviation represents the ratio between delivered quantities and negotiated quantities.
+The calculation of delivered quantities depends on the following two system configurations:
+"Pricing customer (sold to) "
+GDC sums delivered quantities for materials of pricing customers.
+"Execution customer (ship to) "
+GDC sums delivered quantities for materials of execution customers.
+To display delivered quantities in the materials grid, select the corresponding object in the consolidation grid.
+Delivered quantities are only displayed for the following consolidation levels:
+"Scenario"
+"Pricing Customer"
+"System Group"
+RESULT
+Materials, assigned to the selected object in the consolidation grid, are displayed in the materials grid.
+The two columns "Delivered Qty" and "Delivered Qty Deviation" are additionally displayed.
+The column "Delivered Qty" contains the material’s quantity which was delivered to the customer within the last 12 months. 
+Note: Only annual materials with maintained master data contain delivered quantities!
+The column "Delivered Qty Deviation" shows the ratio between delivered quantity and negotiated quantity.
+The used formula for calculation of the ratio is:
+Delivered Qty Deviation = Delivered Qty / Negotiation Qty * 100
+Example for material "cobas INTEGRA GGT LIQUID" from the screenshot above:
+200% = 120 pc / 60 pc * 100
+Context Menu of the Materials Grid
+Select a material in the material list and open the context menu with a right click.
+Items "Remove line", "Remove Material" and "Remove Material from Scenario" are described in the sub chapter.
+The context menu of the materials grid offers additional functionality as follows:
+"Reset line"
+"Reset line" allows to reset the quantities of the selected material to the origin quantity independent of changed material quantities or removed material by using the "Remove line" function from the context menu.
+"Go to GRIPS"
+"Go to GRIPS" opens Roche’s GRIPS system to view the data sheet of the selected material.
+"Open quantificator log for test"
+"Open quantificator log for test" opens a separate window.
+The quantificator log for test comprises detailed information about
+Entered deal data regarding
+Values of the environment data and the level they were defined 
+Quantity of instruments, rotors, and cells
+Manually entered numbers of controls, calibrations, and reruns
+Stability handling data
+Exclusions of materials
+Calculated test-specific data per Instrument regarding
+Quantity of tests (including Rerun tests, QC tests) and reportables
+Evaluation of calibration events
+Calculated test information considering the environment setting's data
+Calculated reagent-specific data regarding
+Quantity of required bottles and kits
+Stability and decomposition calculation
+Calculation of CCC-specific data regarding
+Required quantities
+Packaging information
+Event data
+Used calculation base
+Pack optimization data for reagents regarding
+Size variants
+Pack quantity
+"Open quantificator log for material"
+"Open quantificator log for material" opens the quantificator log for materials.
+This functionality is available for reagents, controls and calibrators only.
+The quantificator log shows information about pack optimization.
+"Open quantificator log for instrument"
+" Open quantificator log for instrument " opens the quantificator log for instruments.
+The quantificator log for instruments comprises materials which are calculated based on instrument events.
+Materials, which are calculated based on instrument events, can be identified by the value "calculated" in the materials grid.
+The quantificator log contains detail information about event calculations based on the entered values in the Instrument Environment tab of the Instrument screen.
+For further information about instrument events see Section "Instrument Environment Tab".
+The calculation base determines the timely basis of the consumption of consumables, controls, and calibrators.
+The information about calculation base is part of the global product information (PIB) and is available per test application.
+The calculation base is used in the quantification process to determine the material consumption quantities per test, considering workload allocation and test environment settings.
+The used calculation base per material can be found in the usage information area  of the quantificator log for test (material list context menu).
+Following values are available as calculation base:
+"Once"
+non-annual quantity = quantity from PIB common product record
+"Year"
+Annual quantity = quantity from PIB common product record
+"Shift"
+Annual quantity = number of shifts per year * required quantity from PIB common product record
+"Day"
+Annual quantity = number of days per year * required quantity from PIB common product record
+"Test"
+Quantity = number of quantificated tests * required quantity from PIB common product record
+"Reportable"
+Quantity = number of reportables * required quantity from PIB common product record
+"Sample"
+Quantity = number of sample * required quantity from PIB common product record
+"Re-run Test"
+Quantity = number of rerun tests * required quantity from PIB common product record
+"Batch (MD only)"
+Quantity = number of batches * required quantity from PIB common product record
+Calculation of Negotiated Quantity for Rounding Mode "Full Packages"
+The material list is a consolidated view.
+The displayed material quantities in the material list represent total quantities or quantities according to the selected consolidation level.
+In order to avoid rounding issues on the basis of consolidated quantities in the material quantities, GDC does not consider rounding settings of the scenario for material quantities.
+GDC considers rounding settings for the calculation of negotiated quantities.
+Rounding is applied on pack level or on system group level.
+The rounding level can be defined in the admin tool.
+The following figure depicts the calculation of the negotiation quantity in a deal using rounding mode "Full Packages".
+The example shows that a calibrator is equally shared between two tests.
+GDC calculated 2.25 packs of the calibrator for each test.
+Rounding is executed on system group level which is equal to pack level for calibrators.
+Calibrator quantities from all tests within the system group are summarized (2.25 + 2.25 = 4.5).
+The sum is rounded up to whole packages (= 5 packs).
+The rounded sum is shared over tests considering the proportion of the calibrator quantities per test.
+The calibrator quantity is shared equally for all tests, thus each test is assigned a negotiation quantity of 2.5 packs (a half of 5 packs).
+The orange colored parts in the figure represent effects caused by rounding.
+The following figure shows GDC's calibrator in the material list on test level.
+The negotiation quantity on test level is used in the Expert Area of the PMT/PMR screen.
+Change Material Quantity
+The user can change the calculated quantity of a material in the material list. 
+Changed material quantities in the material list (in the Qty field) impacts the calculation of the number of kits or packs depending on the selected consolidation level, the rounding mode and the number of included zero price items.
+The result of this calculation is displayed in the "Negotiation Qty" field.
+Additionally, a rule exception might be generated depending on system settings made in the Admin Tool.
+The quantity which was initially calculated or entered, is always shown in the "Origin Qty" field.
+The quantity cannot be changed for
+Instrument materials
+Additional Assets
+Autopulls whose "changeable" flag value equals false
+The quantity cannot be set to 0 for
+Primary materials
+Manuals and Non-Configured materials with a "removable" flag equaling false
+Mandatory associated items
+Autopulls linked to an autopull category which only allows integers can only accept integers.
+If a material quantity is changed on a higher level (e.g. system group), the material quantity is distributed over the entities on lower levels (e.g. tests) according to the material quantity distribution on the lower levels.
+The example in the figure below depicts the effects which arise due to changing the quantity of a material which is not unique in the deal.
+We assume the situation depicted in the example from the former chapter (calibrator with Qty = 4.5 and Negotiation Qty = 5 within the system group).
+By entering a value of 3 packs in the "Qty" field on system group level, the following three calculation steps are invoked:
+Step 1
+On system group level (= pack level), the entered value is rounded up to integers or fractional numbers depending on deal settings made in the Scenario screen.
+The rounded value is transferred to the "Negotiation Qty" field (= 3 packs).
+Step 2
+GDC calculates proportions of the calibrator quantity in tests based on the initially calculated material quantity.
+Proportion of test 1: 	2.25 packs / 4.5 packs = 	0.5
+Proportion of test 2: 	2.25 packs / 4.5 packs = 	0.5
+Step 3
+The calculated quantity of packs is distributed across the materials in the material list, considering the proportions.
+Test 1: 	3 packs * 0.5 = 1.5 packs
+Test 2: 	3 packs * 0.5 = 1.5 packs
+Material list views prohibits fraction values (e.g., on each level of detail) for autopulls assigned to an autopull category which only allows integers. 
+On a lower level, GDC rounds quantities to integers.
+E.g., if in the example above, the calibrator was replaced by an autopull, GDC would assign one pack to test 1 and two packs to test 2 (or vice versa), but not 1.5 packs to each test.
+Select a view from the drop-down list reflecting the consolidation level on which material quantities should be changed.
+Select the object which contains materials, whose quantities are to be changed by selecting the relevant row in the upper grid.
+RESULT
+Materials assigned to the object selected in the consolidation are listed in the materials grid.
+Select the "Qty" field of the material in the materials grid whose amount is to be changed.
+Modify the quantity by entering a value in the "Qty" field.
+Finally, leave the input field.
+RESULT
+The color of the "Qty" field changes to orange.
+The value in the "Negotiation Qty" field is updated.
+The "Record Info" field is extended by the entry "Edit".
+Pricing is affected by quantity changes.
+Therefore, nodes for price generation and for negotiation in the navigation tree are assigned a red bubble when the user changes the screen.
+GDC compares the input quantity for reagents with the minimum quantity for reagents.
+The minimum quantity for reagents is calculated as number of reportables divided by delivered tests per kit.
+If the entered reagent quantity is less than the minimum quantity, an error message is displayed (see the picture below).
+Specific materials (e.g. ISE cartridges) might be excluded from this minimum quantity check, depending on system settings.
+By clicking the "Reset all to Origin Qty" button, all material quantities in the scenario are reset to quantities originally calculated by GDC.
+By clicking the "Cancel" button, all changes which were made since the material list was last opened, are reset.
+A change of the workload allocation for tests on the workload screen or a change of customer environment settings does not force GDC to recalculate the manually changed quantities in the material list.
+If reagents are assigned with a lower quantity than the quantity in the material list, the reagents quantity is overwritten with the minimum quantity.
+Manually changed material quantities are overwritten by refreshed autopull.
+Remove a Material from the Material List
+GDC offers three possibilities to remove materials from the material list.
+The following functions are accessible by using the right-click context menu on a selected material in the lower grid:
+"Remove Line"
+"Remove Line" removes the selected material from the the scenario or from parts of the scenario (e.g. on test level), depending on the selected list view.
+"Remove Line" is only available if the selected material is removable.
+E.g., reagents and mandatory associated items cannot be removed.
+"Remove Material"
+"Remove Material" removes all instances of the selected material that are visible in the grid.
+E.g. the material is twice in the grid, both entries are removed.
+GDC does not remove materials with origins having a minimum quantity.
+If a user wants to remove materials with a minimum quantity, GDC displays the error message "Some material lines have got a minimum quantity and could not be removed."
+If a user wants to remove not removable materials (e.g., autopull), the materials remains unchanged in the materials list and GDC displays the error message "Some material lines are not removable".
+"Remove Material from Scenario"
+"Remove Material from Scenario" removes the selected material from the entire scenario independent of the currently displayed grid. 
+E.g. removing the material from one test (on test level) would remove it from other tests within the scenario as well.
+If the materials cannot be removed, an error message is displayed (similar to "Remove Material").
+Following materials cannot be removed from the material list:
+Mandatory associated items 
+Instrument
+Manuals and Non-Configured materials with a removable flag that equals false
+Reagents
+For materials that cannot be removed, remove-related context menu items are disabled or an error message occurs after clicking the menu item.
+In the lower grid select the material which should be removed.
+From the right-click context menu select the Remove line item.
+Alternatively, the user can click into the material's "Qty" column, press the "Delete" key, and move to another row.
+Differences between the functions "Remove line", "Remove material" and "Remove material from Scenario" are described in the sub-chapter "Context Menu of the Lower Grid" above in the Material List chapter.
+RESULT
+If a material is removed from the materials list, the quantity of the selected material is set to 0.
+The "Qty" field is highlighted in orange.
+The "Record Info" field is filled with "Removed", "Material number" and "description" are crossed out.
+Uncommitted materials are not crossed out if they are removed.
+As Pricing is affected by materials, nodes for price generation and for negotiation in the navigation tree are assigned a red bubble when the user changes the screen.
+The removed material is only deleted from the selected object level if a material is not unique in the opportunity.
+Materials are not excluded from the entire deal if the material was removed on lowest level (e.g. test).
+Thus, partly removed materials are indicated by colored "Qty" fields and the "Record Info" value equals "Partly Removed".
+Note: GDC keeps removed materials as "removed" if the Quantificator runs again.
+In order to re-include removed materials in the upper grid, use "Reset Line" from the context menu.
+Export and Import of material list data
+Material list data can be exported to an Excel file which can be used by the user to modify quantities.
+GDC considers the level of the material list for exports.
+Furthermore, GDC considers only visible materials in the lower grid of the material list to be exported.
+Modified material data can be re-imported into the material list.
+GDC considers the same level of detail for data import which was selected for data export.
+GDC only imports materials which are already in the opportunity.
+GDC checks during the import if the quantity of the material in the material list is editable.
+If the quantity of a material is "non-changeable" in the master data or the quantity is below the minimum quantity of a reagent, GDC does not overwrite the quantity in the material list.
+GDC handles imported quantities similar to manually adapted quantities.
+Select a level of detail which reflects the material list from which data should be exported.
+The export function for the material list is only available for levels which are higher than box level or test level.
+Filter data in the lower grid to reduce exported materials if needed.
+From the right-click context menu in the lower grid select the Export data item.
+Select a target folder and enter a file name.
+Click on the Save button.
+RESULT
+Selected rows of the material list which are to be exported to the Excel file.
+GDC notifies the user about the exported number of rows.
+After data is modified in MS Excel, start data import by selecting the Import data item from the right-click context menu in the lower grid of the material list.
+Select the relevant Excel file.
+If the user selected a level of detail for data import which does not match the deposited level in the Excel file, GDC displays a warning message.
+If the user wants to force data import click on the Yes button.
+RESULT
+Data is imported and the "Import Results" window opens.
+The "Import Results" window offers detailed information about data import.
+In the example above, GDC was able to import data of 3 materials, a fourth material was rejected (see the lower grid).
+The upper grid in the material list indicates successful imports.
+The example above shows, that the quantity of two materials was updated while the quantity of the third material is remains unchanged.
+Close the Import Results window by clicking on the Close button.
+RESULT
+The "Import Results" window is closed and material list is refreshed. 
+The material list indicates quantities which were changed by an import with an orange background in the "Qty" fields.
+Values in the "Negotiation Qty" fields are updated and  the "Record Info" fields are filled with "Edit".

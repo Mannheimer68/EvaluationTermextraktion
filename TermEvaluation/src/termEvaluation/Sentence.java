@@ -1,28 +1,40 @@
 package termEvaluation;
-
+/*
+ * Class Sentence
+ * Used as an object for storing terms of a sentence with POS-Tags
+ */
 public class Sentence {	
+	/*
+	 * Class variables
+	 */
 	String word;
 	String pos;	
 	String sentence;
-//	int sentenceNumber;
-	
+
+	/*
+	 * constructor
+	 */
 	Sentence( String inpSentence, String inpWord, String inpPos){
 		word = inpWord;
 		pos = inpPos;
 		sentence = inpSentence;
-//		sentenceNumber = inpSentenceNumber;
 	}
-	
-	 void word(){
-		 System.out.println(word);
-	 }
-	 String returnSentence(){
+	 /*
+	  * returns the sentence
+	  */
+	 public String getSentence(){
 		 return sentence;
 	 }
-	  String returnWord(){
+	 /*
+	  * returns the word
+	  */
+	  public String getWord(){
 		 return word;
 	 }
-	 String returnPos(){
+	  /*
+	   * returns the pos tag
+	   */
+	 public String getPos(){
 		 return pos;
 	 }
 		

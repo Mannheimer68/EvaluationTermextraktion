@@ -1,4 +1,8 @@
 package termEvaluation;
+/*
+ * Class Term
+ * Used as an object to store terms with their scores
+ */
 
 public class Term {
 	public String term;
@@ -7,44 +11,61 @@ public class Term {
 	public double frequencyContrastDomain1;
 	public double frequencyContrastDomain2;
 	public double score;
-
+	
+	/*
+	 * constructor for creating a term giving the input term and the lemmatized term
+	 */
 	public Term(String inpTerm, String inpLemmatizedTerm) {
 		this.term = inpTerm;
 		this.lemmatizedTerm = inpLemmatizedTerm;
 	}
+	/*
+	 * constructor for creating a term giving the input term and the score
+	 */
 	public Term(String inpTerm, double inpScore) {
 		this.term = inpTerm;
 		this.score = inpScore;
 	}
+	/*
+	 * constructor for creating a term giving only the term
+	 */
 	public Term(String inpTerm) {
 		this.term = inpTerm;		
 	}
-
-	void term() {
-		System.out.println(term);
-	}
-
-	public String returnTerm() {
+	/*
+	 * returns the term
+	 */
+	public String getTerm() {
 		return term;
 	}
-
-	public String returnLemmatizedTerm() {
+	/*
+	 * returns the lemmatized term
+	 */
+	public String getLemmatizedTerm() {
 		return lemmatizedTerm;
 	}
-
-	public Double returnScore() {
+	/*
+	 * returns the score
+	 */
+	public Double getScore() {
 		return score;
 	}
-
-	public double returnFrequencyText() {
+	/*
+	 * returns the frequency
+	 */
+	public double getFrequencyText() {
 		return frequencyText;
 	}
-
-	public double returnFrequencyContrastDomain1() {
+	/*
+	 * returns the frequency in contrast domain1
+	 */
+	public double getFrequencyContrastDomain1() {
 		return frequencyContrastDomain1;
 	}
-
-	public double returnFrequencyContrastDomain2() {
+	/*
+	 * returns the frequency in contrast domain2
+	 */
+	public double getFrequencyContrastDomain2() {
 		return frequencyContrastDomain2;
 	}
 

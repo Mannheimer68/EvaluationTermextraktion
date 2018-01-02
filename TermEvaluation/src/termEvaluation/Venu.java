@@ -1,6 +1,9 @@
 package termEvaluation;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.*;
 
@@ -17,6 +20,11 @@ import edu.stanford.nlp.util.CoreMap;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 
+/*
+ * Class Venu
+ * Implementation of the algorithm from Venu et al.
+ * Using SSR and HITS-Algorithm to calculate domain terms
+ */
 public class Venu {
 	/*
 	 * class variables
@@ -34,9 +42,9 @@ public class Venu {
 	/*
 	 * get unique entries of the list
 	 */
-	public static ArrayList<String> getUniqueList(ArrayList<String> list) {
+	public static ArrayList<String> getUniqueList(ArrayList<String> inpList) {
 		ArrayList<String> uniqueList = new ArrayList<String>();
-		Iterator<String> itr = list.iterator();
+		Iterator<String> itr = inpList.iterator();
 		while (itr.hasNext()) {
 			String check = itr.next().toString();
 			if (uniqueList.contains(check)) {
@@ -53,12 +61,12 @@ public class Venu {
 	 * the number of co-occurences
 	 */
 	public static Integer countCoOccurencesOfTermsInList(
-			ArrayList<String> ssrIndex, String ssr, String noun) {
+			ArrayList<String> inpSsrIndex, String inpSsr, String inpNoun) {
 		int count = 0;
-		Iterator<String> itr = ssrIndex.iterator();
+		Iterator<String> itr = inpSsrIndex.iterator();
 		while (itr.hasNext()) {
 			String check = itr.next().toString();
-			if (check.contains(ssr) && check.contains(noun)) {
+			if (check.contains(inpSsr) && check.contains(inpNoun)) {
 				count = count + 1;
 			}
 		}
@@ -71,8 +79,8 @@ public class Venu {
 	 * two characters the stanford parser sometimes tags the word "the" as a
 	 * noun which is not the case
 	 */
-	public static ArrayList<String> eraseNoise(ArrayList<String> list) {
-		Iterator<String> itr = list.iterator();
+	public static ArrayList<String> eraseNoise(ArrayList<String> inpList) {
+		Iterator<String> itr = inpList.iterator();
 		while (itr.hasNext()) {
 			String check = itr.next().toString();
 			if (check.contains("=") || check.contains("%")
@@ -83,31 +91,30 @@ public class Venu {
 				itr.remove();
 			}
 		}
-		return list;
+		return inpList;
 	}
 
 	/*
-	 * transpose a given matrix returns the transposed matrix
+	 * transpose a given matrix and return the transposed matrix
 	 */
-	public static int[][] transposeMatrix(int[][] matrix) {
-		int[][] matrixT = new int[matrix[0].length][matrix.length];
-		for (int i = 0; i < matrix.length; i++) {
-			for (int j = 0; j < matrix[0].length; j++) {
-				matrixT[j][i] = matrix[i][j];
+	public static int[][] transposeMatrix(int[][] inpMatrix) {
+		int[][] matrixT = new int[inpMatrix[0].length][inpMatrix.length];
+		for (int i = 0; i < inpMatrix.length; i++) {
+			for (int j = 0; j < inpMatrix[0].length; j++) {
+				matrixT[j][i] = inpMatrix[i][j];
 			}
 		}
 		return matrixT;
-
 	}
 
 	/*
 	 * calculate the term scores using hits algorithm
 	 */
-	public static void calculateTermScores(ArrayList<String> ssrList,
-			ArrayList<String> nounList) {
+	public static void calculateTermScores(ArrayList<String> inpSsrList,
+			ArrayList<String> inpNounList) {
 		// initialize the size of the matrix A and the transposed matrix AT
-		int ssrLength = ssrList.size();
-		int nounLength = nounList.size();
+		int ssrLength = inpSsrList.size();
+		int nounLength = inpNounList.size();
 		// initialize matrix A and transposed matrix AT
 		int[][] matrixA = new int[ssrLength][nounLength];
 		int[][] matrixAT = new int[nounLength][ssrLength];
@@ -123,7 +130,7 @@ public class Venu {
 		for (int i = 0; i < ssrLength; i++) {
 			for (int j = 0; j < nounLength; j++) {
 				matrixA[i][j] = countCoOccurencesOfTermsInList(ssrPrimaryIndex,
-						ssrList.get(i), nounList.get(j));
+						inpSsrList.get(i), inpNounList.get(j));
 			}
 		}
 
@@ -155,12 +162,12 @@ public class Venu {
 
 		// combine calculated hub scores and ssr terms
 		for (int i = 0; i < hub.length; i++) {
-			scoredSSRList.add(new Term(ssrList.get(i), hub[i]));
+			scoredSSRList.add(new Term(inpSsrList.get(i), hub[i]));
 		}
 
 		// combine calculated authority scores and nouns
 		for (int i = 0; i < authority.length; i++) {
-			scoredNounList.add(new Term(nounList.get(i), authority[i]));
+			scoredNounList.add(new Term(inpNounList.get(i), authority[i]));
 		}
 
 	}
@@ -168,31 +175,31 @@ public class Venu {
 	/*
 	 * normalize a given vector and return the unit vector
 	 */
-	public static double[] normalizeVector(double[] vector) {
+	public static double[] normalizeVector(double[] inpVector) {
 		double denominator = 0;
 
-		for (int i = 0; i < vector.length; i++) {
-			denominator = denominator + (vector[i] * vector[i]);
+		for (int i = 0; i < inpVector.length; i++) {
+			denominator = denominator + (inpVector[i] * inpVector[i]);
 		}
 		denominator = Math.sqrt(denominator);
 
-		for (int i = 0; i < vector.length; i++) {
-			vector[i] = vector[i] / denominator;
+		for (int i = 0; i < inpVector.length; i++) {
+			inpVector[i] = inpVector[i] / denominator;
 		}
-		return vector;
+		return inpVector;
 	}
 
 	/*
 	 * multiply matrix with vector and return the calculated vector
 	 */
-	public static double[] getMatrixVectorMultiplikation(int[][] matrix,
-			double[] vector) {
-		double[] calculatedVector = new double[matrix.length];
+	public static double[] getMatrixVectorMultiplikation(int[][] inpMatrix,
+			double[] inpVector) {
+		double[] calculatedVector = new double[inpMatrix.length];
 		// multiply matrix with vector
-		for (int i = 0; i < matrix.length; i++) {
-			for (int j = 0; j < matrix[0].length; j++) {
-				calculatedVector[i] = calculatedVector[i] + matrix[i][j]
-						* vector[j];
+		for (int i = 0; i < inpMatrix.length; i++) {
+			for (int j = 0; j < inpMatrix[0].length; j++) {
+				calculatedVector[i] = calculatedVector[i] + inpMatrix[i][j]
+						* inpVector[j];
 			}
 		}
 		return calculatedVector;
@@ -201,14 +208,13 @@ public class Venu {
 	/*
 	 * return the lemmatized term
 	 */
-
-	static String getLemmatizedTerm(String s) {
+	static String getLemmatizedTerm(String inpString) {
 		String lemmatizedTerm = "";
 		Properties props;
 		props = new Properties();
 		props.put("annotators", "tokenize, ssplit, pos, lemma");
 		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
-		Annotation document = new Annotation(s);
+		Annotation document = new Annotation(inpString);
 		pipeline.annotate(document);
 		List<CoreMap> sentences = document.get(SentencesAnnotation.class);
 		for (CoreMap sentence : sentences) {
@@ -261,10 +267,10 @@ public class Venu {
 	/*
 	 * add all ArrayList items to a string (each item in a new line)
 	 */
-	public static String addArrayListToString(ArrayList<String> stringList) {
+	public static String addArrayListToString(ArrayList<String> inpStringList) {
 		String text = "";
 		// loop over all terms and write them into a separate line of the string
-		for (String string : stringList) {
+		for (String string : inpStringList) {
 			text = text + string + System.lineSeparator();
 		}
 		return text;
@@ -273,12 +279,12 @@ public class Venu {
 	/*
 	 * sort the term values by their name
 	 */
-	static ArrayList<String> sortValuesAlphabetical(ArrayList<String> list) {
-		Collections.sort(list);
-		return list;
+	static ArrayList<String> sortValuesAlphabetical(ArrayList<String> inpList) {
+		Collections.sort(inpList);
+		return inpList;
 	}
 
-	public static void setAnnotateDocument(String text) {
+	public static void setAnnotateDocument(String inpText) {
 		// creates a StanfordCoreNLP object, with POS tagging, lemmatization,
 		// NER, parsing, and coreference resolution
 		Properties props = new Properties();
@@ -286,12 +292,12 @@ public class Venu {
 				"tokenize, ssplit, pos, lemma, ner, parse, dcoref");
 		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
 		// create an empty Annotation just with the given text
-		document = new Annotation(text);
+		document = new Annotation(inpText);
 		// run all Annotators on this text
 		pipeline.annotate(document);
 	}
 
-	public static void setSSR(String text) {
+	public static void setSSR(String inpText) {
 		// these are all the sentences in this document
 		// a CoreMap is essentially a Map that uses class objects as keys and
 		// has values with custom types
@@ -332,7 +338,8 @@ public class Venu {
 					ssrTokens = ssrTokens
 							+ typedDependency.reln().getShortName().toString()
 							+ ": "
-							+ text.toString()
+							+ inpText
+									.toString()
 									.substring(indexBeginString, indexEndString)
 									.toLowerCase() + System.lineSeparator();
 				}
@@ -347,27 +354,31 @@ public class Venu {
 						|| typedDependency.reln().getShortName().equals("dobj")) { // svo
 					// if SSR is not already included and term length is larger
 					// than 3 or term includes line break
-					if (ssrUniqueList.contains(text.toString()
+					if (ssrUniqueList.contains(inpText.toString()
 							.substring(indexBeginString, indexEndString)
 							.toLowerCase())
-							|| text.toString()
+							|| inpText
+									.toString()
 									.substring(indexBeginString, indexEndString)
 									.length()
-									- text.toString()
+									- inpText
+											.toString()
 											.substring(indexBeginString,
 													indexEndString)
 											.replaceAll(" ", "").length() > 2
-							|| text.toString()
+							|| inpText
+									.toString()
 									.substring(indexBeginString, indexEndString)
 									.length()
-									- text.toString()
+									- inpText
+											.toString()
 											.substring(indexBeginString,
 													indexEndString)
 											.replaceAll("\n", "").length() > 0) {
 						// do not add items which are already in the list
 					} else {
 						// add ssr to list and replace line breaks by space
-						ssrUniqueList.add(text.toString()
+						ssrUniqueList.add(inpText.toString()
 								.substring(indexBeginString, indexEndString)
 								.toLowerCase());
 					}
@@ -389,7 +400,12 @@ public class Venu {
 		noiseTerms.add("the");
 	}
 
-	public static void startVenu(String inpTextPath, int inpPrintStatus)
+	/*
+	 * start calculation if venu et al input param 1: path of the plain text
+	 * which should be analyzed input param 2: print status (0 = do not print, 1
+	 * = print)
+	 */
+	public static void startVenu(String inpTextPath,  String inpOutputPath, int inpPrintStatus)
 			throws IOException {
 		// read file and save to text
 		String text = Functions.readFile(inpTextPath, Charset.defaultCharset());
@@ -416,7 +432,7 @@ public class Venu {
 		// calculate the term scores
 		// creating a matrix and using hits algorithm
 		calculateTermScores(ssrUniqueList, nounList);
-		
+
 		scoredTermList.addAll(scoredNounList);
 		scoredTermList.addAll(scoredSSRList);
 		// sort lists by score
@@ -424,17 +440,17 @@ public class Venu {
 		scoredSSRList = sortValuesByScore(scoredSSRList);
 		scoredTermList = sortValuesByScore(scoredTermList);
 
-		printResults();	
-		
-		Functions.writeStringToFile( "venu_nouns_scored", Functions.addTermsWithScoreToString(scoredNounList));
-		Functions.writeStringToFile( "venu_combined_scored", Functions.addTermsWithScoreToString(scoredTermList));
-		Functions.writeStringToFile( "venu_ssr_scored", Functions.addTermsWithScoreToString(scoredSSRList));
-		 
-		//Evaluation eva = new Evaluation(scoredNounList,"C:/Users/Mannheimer/Desktop/Bachelor/Daten/plain.txt");
-		//eva.printValues();
-		
+		printResults();
+		// write files to disk
+		Functions.writeStringToFile(inpOutputPath+"venu_nouns_scored__0",
+				Functions.addTermsWithScoreToString(scoredNounList));
+		Functions.writeStringToFile(inpOutputPath+"venu_combined_scored__0",
+				Functions.addTermsWithScoreToString(scoredTermList));
+		Functions.writeStringToFile(inpOutputPath+"venu_ssr_scored__0",
+				Functions.addTermsWithScoreToString(scoredSSRList));
 
 	}
+
 	/*
 	 * print results
 	 */
@@ -447,32 +463,116 @@ public class Venu {
 						"The noun [%s] has a score of [%s]", term.term,
 						term.score));
 			}
-
-//			// print SSR
-//			System.out.println("Sorted SSR:");
-//			for (Term term : scoredSSRList) {
-//				System.out.println(String.format(
-//						"The SSR [%s] has a score of [%s]", term.term,
-//						term.score));
-//			}
+			// print ssr
+			System.out.println("Sorted SSR:");
+			for (Term term : scoredSSRList) {
+				System.out.println(String.format(
+						"The SSR [%s] has a score of [%s]", term.term,
+						term.score));
+			}
 		}
 	}
 
 	/*
 	 * sort the term values by their score
 	 */
-	static ArrayList<Term> sortValuesByScore(ArrayList<Term> terms) {
-		Collections.sort(terms, new Comparator<Term>() {
+	static ArrayList<Term> sortValuesByScore(ArrayList<Term> inpTerms) {
+		Collections.sort(inpTerms, new Comparator<Term>() {
 			@Override
 			public int compare(Term t1, Term t2) {
 				return Double.compare(t2.score, t1.score);
 			}
 		});
-		return terms;
+		return inpTerms;
 	}
 
+	@SuppressWarnings("resource")
+	public static void startVenuWithUserInput() throws IOException {
+		// initialize user input
+		InputStreamReader isr = new InputStreamReader(System.in);
+		BufferedReader br = new BufferedReader(isr);
+		System.out.print("1. Please enter the file path of the PLAIN text:"
+				+ System.lineSeparator() + "(Leave empty to use example text)"+ System.lineSeparator());
+		// get input from user
+		String filePath = br.readLine();
+		// replace back slashes with file separator
+		filePath = filePath.replace("\\", File.separator);
+		File testFile = new File(filePath);
+		// set standard text if no path was typed in
+		if (filePath.length() == 0) {
+			filePath = "text/plain.txt";
+			System.out.print("==>Example text " + filePath + " is used"
+					+ System.lineSeparator() + System.lineSeparator());
+		} else {
+			// check if entered file path exist and force to enter a correct
+			// path
+			while (!testFile.exists() || !filePath.contains(".txt")) {
+				System.out
+						.print("File does not exist. Please enter correct file path of the plain text."
+								+ System.lineSeparator());
+				filePath = br.readLine();
+				filePath = filePath.replace("\\", File.separator);
+				testFile = new File(filePath);
+			}
+		}
+		
+		//
+		// input of the output directory file
+		//
+		System.out.print("2. Please enter an OUTPUT DIRECTORY :"
+				+ System.lineSeparator()
+				+ "(Leave empty if you want to use the class folder)" + System.lineSeparator());
+		// get input from user
+		String outputPath = br.readLine();
+		// replace back slashes with file separator
+		outputPath = outputPath.replace("\\", File.separator);
+		File outputFile = new File(outputPath);
+		// check if entered file path exist and force to enter a correct path
+		if (outputPath.length() != 0) {
+			while (!outputFile.exists()
+					|| outputPath.contains(".txt")
+					|| !outputPath.substring(outputPath.length() - 1).equals(
+							File.separator)) {
+				System.out
+						.print("==>Please enter a correct directory. File names are not allowed"
+								+ System.lineSeparator());
+				outputPath = br.readLine();
+				outputPath = outputPath.replace("\\", File.separator);
+				outputFile = new File(outputPath);
+			}
+		} else {
+			System.out.print("Standard path is used" + System.lineSeparator()
+					+ System.lineSeparator());
+		}
+		
+		//
+		// get input from user
+		//
+		System.out.print("3. Do you want to print the output(0 = No | 1 = Yes) ?"
+				+ System.lineSeparator());
+		String inputPrint = br.readLine();
+		// check if user input is either "1" or "0"
+		while (!inputPrint.equals("0") && !inputPrint.equals("1")) {
+			System.out
+					.print("Please enter '0' (zero) for 'NO' and '1'(one) for yes:"
+							+ System.lineSeparator());
+			inputPrint = br.readLine();
+		}
+		if (inputPrint.equals("0")) {
+			startVenu(filePath,outputPath, 0);
+		}
+		if (inputPrint.equals("1")) {
+			startVenu(filePath,outputPath, 1);
+		}
+	}
+
+	/*
+	 * main
+	 */
 	public static void main(String[] args) throws IOException {
-		startVenu("C:/Users/Mannheimer/Desktop/Bachelor/Daten/plain.txt", 0);
+		// starting venu et al without print
+		// startVenu("C:/Users/Mannheimer/Desktop/Bachelor/Daten/plain.txt", 0);
+		startVenuWithUserInput();
 	}
 
 }

@@ -122,7 +122,6 @@ public class Balachandran {
 			int i) {
 		String nTerm;
 		// check if terms fit the rule
-
 		if ((inpSentence.get(i).pos.equals("NN") || inpSentence.get(i).pos.equals("NNS")
 				|| inpSentence.get(i).pos.equals("NNP") || inpSentence.get(i).pos.equals("NNPS"))
 				&& (inpSentence.get(i - 1).pos.equals("JJ")
@@ -137,7 +136,6 @@ public class Balachandran {
 				inpTerm.add(nTerm.toLowerCase());
 			}
 		}
-
 		return inpTerm;
 	}
 
@@ -149,7 +147,6 @@ public class Balachandran {
 			int i) {
 		String nTerm;
 		// check if terms fit the rule
-
 		if ((inpSentence.get(i).pos.equals("NN") || inpSentence.get(i).pos.equals("NNS")
 				|| inpSentence.get(i).pos.equals("NNP") || inpSentence.get(i).pos.equals("NNPS"))
 				&& (inpSentence.get(i - 1).pos.equals("NN")
@@ -165,7 +162,6 @@ public class Balachandran {
 				inpTerm.add(nTerm.toLowerCase());
 			}
 		}
-
 		return inpTerm;
 	}
 
@@ -223,7 +219,6 @@ public class Balachandran {
 				inpTerm.add(nTerm.toLowerCase());
 			}
 		}
-
 		return inpTerm;
 	}
 
@@ -278,18 +273,13 @@ public class Balachandran {
 			String inpText, int inpFrequencyType) {
 		StringTokenizer countAllWords = new StringTokenizer(inpText);
 		double counterAllWords = countAllWords.countTokens();
-
 		// loop over all lemmatized terms
 		for (int i = 0; i < inpLemmatizedTerm.size(); i++) {
 			int counter = 0;
 			// count the occurrence of the original term inside the text if it
 			// is a multi term
 			if (inpLemmatizedTerm.get(i).term.replace(" ", "").length() != inpLemmatizedTerm
-					.get(i).term.length()) {
-				/*
-				 * TEST
-				 */
-
+					.get(i).term.length()) {				
 				counter = getCountOccurences(
 						inpLemmatizedTerm.get(i).lemmatizedTerm, inpText);
 			}
@@ -328,7 +318,6 @@ public class Balachandran {
 	}
 
 	static ArrayList<String> getRelevantTerms(String inpText) {
-
 		ArrayList<String> terms = new ArrayList<String>();
 		Properties props = new Properties();
 		props.setProperty("annotators",
@@ -336,10 +325,8 @@ public class Balachandran {
 		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
 		Annotation document = new Annotation(inpText);
 		pipeline.annotate(document);
-
 		List<CoreMap> sentences = document
 				.get(CoreAnnotations.SentencesAnnotation.class);
-
 		for (CoreMap sentence : sentences) {
 			ArrayList<Sentence> tokenizedSentence = new ArrayList<Sentence>();
 			// traversing the words in the current sentence
@@ -399,7 +386,6 @@ public class Balachandran {
 				Charset.defaultCharset());
 		String compareText2 = Functions.readFile(inpCompareText2Path,
 				Charset.defaultCharset());
-
 		// extract the relevant terms of the given text
 		ArrayList<String> terms = getRelevantTerms(text);
 		// lemmatize the terms
@@ -413,7 +399,6 @@ public class Balachandran {
 		// add the score based on the occurrences
 		lemmatizedTerms = addScore(lemmatizedTerms);
 		lemmatizedTerms = sortValuesByScore(lemmatizedTerms);
-
 		Functions.writeStringToFile(inpOutputPath + "balachandran_scored__0",
 				Functions.addLemmatizedTermsWithScoreToString(lemmatizedTerms));
 		if (inpPrintStatus == 1) {
@@ -441,7 +426,6 @@ public class Balachandran {
 				inpTerms.remove(i);
 			}
 		}
-
 		// return the term list without noise
 		return inpTerms;
 	}
@@ -456,7 +440,6 @@ public class Balachandran {
 			terms = terms + term.term + System.lineSeparator();
 		}
 		return terms;
-
 	}
 
 	/*
@@ -479,8 +462,6 @@ public class Balachandran {
 		// initialize user input
 		InputStreamReader isr = new InputStreamReader(System.in);
 		BufferedReader br = new BufferedReader(isr);
-
-		//
 		// input of the plain text
 		//
 		System.out.print("1. Please enter the file path of the PLAIN text:"
@@ -506,8 +487,7 @@ public class Balachandran {
 				textPath = textPath.replace("\\", File.separator);
 				textFile = new File(textPath);
 			}
-		}
-		//
+		}		
 		// input if the first contrast text
 		//
 		System.out
@@ -538,7 +518,6 @@ public class Balachandran {
 				contrast1File = new File(contrast1Path);
 			}
 		}
-		//
 		// input if the second contrast text
 		//
 		System.out
@@ -553,7 +532,6 @@ public class Balachandran {
 		File contrast2File = new File(contrast2Path);
 		// set standard text if no path was typed in
 		if (contrast2Path.length() == 0) {
-
 			contrast2Path = "text/reuters.txt";
 			System.out.print("==>Standard text " + contrast2Path + " is used"
 					+ System.lineSeparator() + System.lineSeparator());
@@ -570,8 +548,7 @@ public class Balachandran {
 				contrast2Path = contrast2Path.replace("\\", File.separator);
 				contrast2File = new File(contrast2Path);
 			}
-		}
-		//
+		}		
 		// input of the output directory file
 		//
 		System.out.print("4. Please enter an OUTPUT DIRECTORY:"
@@ -600,8 +577,6 @@ public class Balachandran {
 			System.out.print("Standard path is used" + System.lineSeparator()
 					+ System.lineSeparator());
 		}
-
-		//
 		// get input from user
 		//
 		System.out
@@ -633,5 +608,4 @@ public class Balachandran {
 	public static void main(String[] args) throws IOException {
 		startBalachandranWithUserInput();
 	}
-
 }

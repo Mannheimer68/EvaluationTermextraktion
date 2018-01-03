@@ -283,7 +283,6 @@ public class Venu {
 		Collections.sort(inpList);
 		return inpList;
 	}
-
 	public static void setAnnotateDocument(String inpText) {
 		// creates a StanfordCoreNLP object, with POS tagging, lemmatization,
 		// NER, parsing, and coreference resolution
@@ -319,7 +318,6 @@ public class Venu {
 				int indexBeginString = 0;
 				int indexEndString = 0;
 				typedDependency = (TypedDependency) object;
-
 				// calculate the start and end index of the string
 				// use lowest start point as start
 				if (typedDependency.gov().beginPosition() < typedDependency
@@ -330,7 +328,6 @@ public class Venu {
 					indexBeginString = typedDependency.dep().beginPosition();
 					indexEndString = typedDependency.gov().endPosition();
 				}
-
 				// write all SSR into a string generating a tokenstream
 				if (typedDependency.reln().getShortName().contains("root")) {
 					// do not add items which are of the type "root"
@@ -343,7 +340,6 @@ public class Venu {
 									.substring(indexBeginString, indexEndString)
 									.toLowerCase() + System.lineSeparator();
 				}
-
 				// add all relevant SSR to the secondary index
 				// secondary index only includes unique SSR
 				if (typedDependency.reln().getShortName().contains("nmod") // relations
@@ -421,25 +417,21 @@ public class Venu {
 		ssrUniqueList = sortValuesAlphabetical(ssrUniqueList);
 		// erase noise from the sorted unique SSR list
 		ssrUniqueList = eraseNoise(ssrUniqueList);
-
 		// set the nouns
 		setNouns();
 		// sort nouns alphabetical
 		nounList = sortValuesAlphabetical(nounList);
 		// erase noise from the nouns list
 		nounList = eraseNoise(nounList);
-
 		// calculate the term scores
 		// creating a matrix and using hits algorithm
 		calculateTermScores(ssrUniqueList, nounList);
-
 		scoredTermList.addAll(scoredNounList);
 		scoredTermList.addAll(scoredSSRList);
 		// sort lists by score
 		scoredNounList = sortValuesByScore(scoredNounList);
 		scoredSSRList = sortValuesByScore(scoredSSRList);
 		scoredTermList = sortValuesByScore(scoredTermList);
-
 		printResults();
 		// write files to disk
 		Functions.writeStringToFile(inpOutputPath + "venu_nouns_scored__0",
@@ -448,7 +440,6 @@ public class Venu {
 				Functions.addTermsWithScoreToString(scoredTermList));
 		Functions.writeStringToFile(inpOutputPath + "venu_ssr_scored__0",
 				Functions.addTermsWithScoreToString(scoredSSRList));
-
 	}
 
 	/*
@@ -493,7 +484,6 @@ public class Venu {
 		System.out.println("1. Please enter the file path of the PLAIN text:"
 				+ System.lineSeparator() + "(Leave empty to use example text)");
 		// get input from user
-
 		String filePath = br.readLine();
 		// replace back slashes with file separator
 		filePath = filePath.replace("\\", File.separator);
@@ -515,9 +505,7 @@ public class Venu {
 				testFile = new File(filePath);
 			}
 			System.out.println("");
-		}
-
-		//
+		}		
 		// input of the output directory file
 		//
 		System.out.print("2. Please enter an OUTPUT DIRECTORY :"
@@ -545,8 +533,6 @@ public class Venu {
 			System.out.println("==>Standard path is used"
 					+ System.lineSeparator());
 		}
-
-		//
 		// get input from user
 		//
 		System.out
@@ -574,5 +560,4 @@ public class Venu {
 	public static void main(String[] args) throws IOException {
 		startVenuWithUserInput();
 	}
-
 }

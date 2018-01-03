@@ -632,11 +632,6 @@ public class Balachandran {
 	 */
 	public static void main(String[] args) throws IOException {
 		startBalachandranWithUserInput();
-		// startBalachandran(
-		// "C:/Users/Mannheimer/Desktop/Bachelor/Daten/plain.txt",
-		// "C:/Users/Mannheimer/Desktop/Bachelor/Daten/genia.txt",
-		// "C:/Users/Mannheimer/Desktop/Bachelor/Daten/reuters.txt");
-		// C:\Users\Mannheimer\Desktop\Bachelor\Evaluation\
 	}
 
 }

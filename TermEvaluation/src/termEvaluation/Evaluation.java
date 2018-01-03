@@ -438,13 +438,10 @@ public class Evaluation {
 	}
 
 	/*
-	 * main"C:\Users\Mannheimer\Desktop\Bachelor\Evaluation\balachandran_scored__3.txt"
+	 * main
 	 */
 	public static void main(String[] args) throws IOException {
-		startEvaluation();
-		// C:\Users\Mannheimer\Desktop\Bachelor\Evaluation\venu_combined_scored__0.txt
-		//C:\Users\Mannheimer\Desktop\Bachelor\Evaluation\
-		//C:\Users\Mannheimer\Desktop\Bachelor\Evaluation\balachandran_scored__3.txt
+		startEvaluation();		
 	}
 
 }

@@ -572,8 +572,6 @@ public class Venu {
 	 * main
 	 */
 	public static void main(String[] args) throws IOException {
-		// starting venu et al without print
-		// startVenu("C:/Users/Mannheimer/Desktop/Bachelor/Daten/plain.txt", 0);
 		startVenuWithUserInput();
 	}
 

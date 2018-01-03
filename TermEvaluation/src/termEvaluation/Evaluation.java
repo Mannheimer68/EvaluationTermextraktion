@@ -10,8 +10,6 @@ import java.util.*;
 import termEvaluation.Term;
 import termEvaluation.EvaluationData;
 
-
-
 /*
  * Class Evaluation Calculation of precision, recall and f1
  */
@@ -250,8 +248,8 @@ public class Evaluation {
 	/*
 	 * Returns a string of max scores 
 	 * Form: 
-	 * 		The algorithm found 123 terms.
-	 * 		The gold standard is 125 terms large. 	 
+	 * 		The algorithm found 123 terms. 
+	 * 		The gold standard is 125 terms large. 
 	 * 		The highest precision of 0.10494623655913979 is reached by using Top 300 terms. 
 	 * 		The highest recall of 0.44757094757094756 is reached by using Top 990 terms. 
 	 * 		The highest f1 score of 0.15550124292369075 is reached by using Top 990 terms.
@@ -266,7 +264,7 @@ public class Evaluation {
 		// sort ArrayList by precision, recall and f1 and add them to the return
 		// string
 		ArrayList<EvaluationData> maxPrecision = sortEvaDataByPrecision(evaData);
-		max = "The algorithm found "+ maxPrecision.size()+ " terms."
+		max = "The algorithm found " + maxPrecision.size() + " terms."
 				+ System.lineSeparator();
 		max = max + "The gold standard is " + inpGoldSize + " terms large"
 				+ System.lineSeparator();
@@ -293,15 +291,16 @@ public class Evaluation {
 	 * 		Precision: 0.016666666666666666 
 	 * 		Recall:    0.003968253968253968 
 	 * 		F1-Score:  0.006410256410256409 
-	 *	 	=========================
+	 * 		=========================
 	 */
-	public static void saveEvaluationData(ArrayList<EvaluationData> inpEvaData, int inpGoldSize)
-			throws IOException {
+	public static void saveEvaluationData(ArrayList<EvaluationData> inpEvaData,
+			int inpGoldSize, String inpOutputPath) throws IOException {
 		// create output string
 		String evaString = "";
 		// add max precision, max recall and max f1 score information to the
 		// output string
-		evaString = evaString + getMaxStatisticAsString(inpEvaData, inpGoldSize);
+		evaString = evaString
+				+ getMaxStatisticAsString(inpEvaData, inpGoldSize);
 		// loop over all evaluated data and add the calculated scores to the
 		// output string
 		for (EvaluationData eva : inpEvaData) {
@@ -317,8 +316,9 @@ public class Evaluation {
 					+ System.lineSeparator();
 		}
 		// write file from the given output string
-		String [] fileName = evaluationFileName.split("__");
-		Functions.writeStringToFile(fileName[0]+"_eva", evaString);
+		String[] fileName = evaluationFileName.split("__");
+		Functions.writeStringToFile(inpOutputPath + fileName[0] + "_eva__0",
+				evaString);
 	}
 
 	/*
@@ -327,8 +327,8 @@ public class Evaluation {
 	 * path of the scored term list document created by Venu.JAVA or
 	 * Balachandran.JAVA
 	 */
-	public static void startCalculation(String inpTermPath, String inpGoldPath)
-			throws IOException {
+	public static void startCalculation(String inpTermPath, String inpGoldPath,
+			String inpOutputPath) throws IOException {
 		ArrayList<String> gold = new ArrayList<String>();
 		ArrayList<Term> terms = new ArrayList<Term>();
 		ArrayList<EvaluationData> evaluationData = new ArrayList<EvaluationData>();
@@ -349,7 +349,7 @@ public class Evaluation {
 			bestTerms = bestTerms + 1;
 		}
 		// save evaluation data to file
-		saveEvaluationData(evaluationData, gold.size());
+		saveEvaluationData(evaluationData, gold.size(), inpOutputPath);
 	}
 
 	/*
@@ -359,7 +359,8 @@ public class Evaluation {
 		// initialize user entry
 		InputStreamReader isr = new InputStreamReader(System.in);
 		BufferedReader br = new BufferedReader(isr);
-		System.out.print("Please enter the file path of the scored terms:");
+		System.out
+				.println("1. Please enter the file path of the scored terms:");
 		// get input from user
 		String filePath = br.readLine();
 		// replace back slashes with file separator
@@ -367,31 +368,71 @@ public class Evaluation {
 		File testFile = new File(filePath);
 		// check if entered file path exist and force to enter a correct path
 		while (!testFile.exists() || !filePath.contains(".txt")) {
-			System.out.print("Path not correcet." + System.lineSeparator()
-					+ "Please enter correct file path of the scored terms:"
-					+ System.lineSeparator());
+			System.out.println("Path not correcet." + System.lineSeparator()
+					+ "Please enter correct file path of the scored terms:");
 			filePath = br.readLine();
 			filePath = filePath.replace("\\", File.separator);
 			testFile = new File(filePath);
 		}
-
-		System.out.print("Please enter the file path of the gold standard:");
+		System.out.println("");
+		System.out.print("2. Please enter the file path of the gold standard:"
+				+ System.lineSeparator()
+				+ "(Leave empty to use an example gold standard)");
 		// get input from user
 		String goldPath = br.readLine();
 		// replace back slashes with file separator
 		goldPath = goldPath.replace("\\", File.separator);
 		testFile = new File(goldPath);
-		// check if entered file path exist and force to enter a correct path
-		while (!testFile.exists() || !goldPath.contains(".txt")) {
-			System.out.print("Path not correcet." + System.lineSeparator()
-					+ "Please enter correct  path of the gold standard:"
+		// set standard text if no path was typed in
+		if (goldPath.length() == 0) {
+			goldPath = "text/gold.txt";
+			System.out.println("==>Gold standard " + goldPath + " is used"
 					+ System.lineSeparator());
-			goldPath = br.readLine();
-			goldPath = goldPath.replace("\\", File.separator);
-			testFile = new File(goldPath);
+		} else {
+			// check if entered file path exist and force to enter a correct
+			// path
+			while (!testFile.exists() || !goldPath.contains(".txt")) {
+				System.out.println("Path not correcet."
+						+ System.lineSeparator()
+						+ "Please enter correct  path of the gold standard:"
+						+ System.lineSeparator());
+				goldPath = br.readLine();
+				goldPath = goldPath.replace("\\", File.separator);
+				testFile = new File(goldPath);
+			}
+			System.out.println("");
 		}
+
+		//
+		// input of the output directory file
+		//
+		System.out.print("3. Please enter the an output directory:"
+				+ System.lineSeparator()
+				+ "(Leave empty to use class directory)");
+		// get input from user
+		String outputPath = br.readLine();
+		// replace back slashes with file separator
+		outputPath = outputPath.replace("\\", File.separator);
+		File outputFile = new File(outputPath);
+		// check if entered file path exist and force to enter a correct path
+		if (outputPath.length() == 0) {
+			System.out.println("==>Standard path is used"
+					+ System.lineSeparator());
+		} else {
+			while (!outputFile.exists()
+					|| outputPath.contains(".txt")
+					|| !outputPath.substring(outputPath.length() - 1).equals(
+							File.separator)) {
+				System.out
+						.println("==>Please enter a correct directory. File names are not allowed");
+				outputPath = br.readLine();
+				outputPath = outputPath.replace("\\", File.separator);
+				outputFile = new File(outputPath);
+			}
+		}
+
 		// start the calculation of precision, recall and f1 score
-		startCalculation(filePath, goldPath);
+		startCalculation(filePath, goldPath, outputPath);
 	}
 
 	/*
@@ -399,10 +440,7 @@ public class Evaluation {
 	 */
 	public static void main(String[] args) throws IOException {
 		startEvaluation();
-		// C:\Users\Mannheimer\git\EvaluationTermextraktion\TermEvaluation\venu_combined_scored__3.txt
-		// C:\Users\Mannheimer\Desktop\Bachelor\Daten\gold.txt
-		// C:/Users/Mannheimer/git/EvaluationTermextraktion/TermEvaluation/balachandran_lemmatized_scored.txt
-		// C:/Users/Mannheimer/Desktop/Bachelor/Daten/gold_test.txt		
+		// C:\Users\Mannheimer\Desktop\Bachelor\Evaluation\venu_combined_scored__0.txt
 	}
 
 }

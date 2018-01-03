@@ -405,8 +405,8 @@ public class Venu {
 	 * which should be analyzed input param 2: print status (0 = do not print, 1
 	 * = print)
 	 */
-	public static void startVenu(String inpTextPath,  String inpOutputPath, int inpPrintStatus)
-			throws IOException {
+	public static void startVenu(String inpTextPath, String inpOutputPath,
+			int inpPrintStatus) throws IOException {
 		// read file and save to text
 		String text = Functions.readFile(inpTextPath, Charset.defaultCharset());
 		// set print status
@@ -442,11 +442,11 @@ public class Venu {
 
 		printResults();
 		// write files to disk
-		Functions.writeStringToFile(inpOutputPath+"venu_nouns_scored__0",
+		Functions.writeStringToFile(inpOutputPath + "venu_nouns_scored__0",
 				Functions.addTermsWithScoreToString(scoredNounList));
-		Functions.writeStringToFile(inpOutputPath+"venu_combined_scored__0",
+		Functions.writeStringToFile(inpOutputPath + "venu_combined_scored__0",
 				Functions.addTermsWithScoreToString(scoredTermList));
-		Functions.writeStringToFile(inpOutputPath+"venu_ssr_scored__0",
+		Functions.writeStringToFile(inpOutputPath + "venu_ssr_scored__0",
 				Functions.addTermsWithScoreToString(scoredSSRList));
 
 	}
@@ -490,9 +490,10 @@ public class Venu {
 		// initialize user input
 		InputStreamReader isr = new InputStreamReader(System.in);
 		BufferedReader br = new BufferedReader(isr);
-		System.out.print("1. Please enter the file path of the PLAIN text:"
-				+ System.lineSeparator() + "(Leave empty to use example text)"+ System.lineSeparator());
+		System.out.println("1. Please enter the file path of the PLAIN text:"
+				+ System.lineSeparator() + "(Leave empty to use example text)");
 		// get input from user
+
 		String filePath = br.readLine();
 		// replace back slashes with file separator
 		filePath = filePath.replace("\\", File.separator);
@@ -500,8 +501,8 @@ public class Venu {
 		// set standard text if no path was typed in
 		if (filePath.length() == 0) {
 			filePath = "text/plain.txt";
-			System.out.print("==>Example text " + filePath + " is used"
-					+ System.lineSeparator() + System.lineSeparator());
+			System.out.println("==>Example text " + filePath + " is used"
+					+ System.lineSeparator());
 		} else {
 			// check if entered file path exist and force to enter a correct
 			// path
@@ -513,14 +514,15 @@ public class Venu {
 				filePath = filePath.replace("\\", File.separator);
 				testFile = new File(filePath);
 			}
+			System.out.println("");
 		}
-		
+
 		//
 		// input of the output directory file
 		//
 		System.out.print("2. Please enter an OUTPUT DIRECTORY :"
 				+ System.lineSeparator()
-				+ "(Leave empty if you want to use the class folder)" + System.lineSeparator());
+				+ "(Leave empty if you want to use the class folder)");
 		// get input from user
 		String outputPath = br.readLine();
 		// replace back slashes with file separator
@@ -533,35 +535,36 @@ public class Venu {
 					|| !outputPath.substring(outputPath.length() - 1).equals(
 							File.separator)) {
 				System.out
-						.print("==>Please enter a correct directory. File names are not allowed"
-								+ System.lineSeparator());
+						.println("Please enter a correct directory. File names are not allowed");
 				outputPath = br.readLine();
 				outputPath = outputPath.replace("\\", File.separator);
 				outputFile = new File(outputPath);
 			}
+			System.out.println("");
 		} else {
-			System.out.print("Standard path is used" + System.lineSeparator()
+			System.out.println("==>Standard path is used"
 					+ System.lineSeparator());
 		}
-		
+
 		//
 		// get input from user
 		//
-		System.out.print("3. Do you want to print the output(0 = No | 1 = Yes) ?"
-				+ System.lineSeparator());
+		System.out
+				.print("3. Do you want to print the output(0 = No | 1 = Yes) ?");
 		String inputPrint = br.readLine();
 		// check if user input is either "1" or "0"
 		while (!inputPrint.equals("0") && !inputPrint.equals("1")) {
 			System.out
-					.print("Please enter '0' (zero) for 'NO' and '1'(one) for yes:"
-							+ System.lineSeparator());
+					.println("Please enter '0' (zero) for 'NO' and '1'(one) for yes:");
 			inputPrint = br.readLine();
 		}
+		System.out.println("");
+
 		if (inputPrint.equals("0")) {
-			startVenu(filePath,outputPath, 0);
+			startVenu(filePath, outputPath, 0);
 		}
 		if (inputPrint.equals("1")) {
-			startVenu(filePath,outputPath, 1);
+			startVenu(filePath, outputPath, 1);
 		}
 	}
 

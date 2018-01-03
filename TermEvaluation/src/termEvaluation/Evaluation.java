@@ -250,7 +250,7 @@ public class Evaluation {
 	 * Form: 
 	 * 		The algorithm found 123 terms. 
 	 * 		The gold standard is 125 terms large. 
-	 * 		The highest precision of 0.10494623655913979 is reached by using Top 300 terms. 
+	 * 		The highest precision of 0.10494623655913979 is reached by using Top 300 terms"C:\Users\Mannheimer\Desktop\Bachelor\Evaluation\balachandran_scored__3.txt". 
 	 * 		The highest recall of 0.44757094757094756 is reached by using Top 990 terms. 
 	 * 		The highest f1 score of 0.15550124292369075 is reached by using Top 990 terms.
 	 * 		========================================
@@ -316,8 +316,10 @@ public class Evaluation {
 					+ System.lineSeparator();
 		}
 		// write file from the given output string
-		String[] fileName = evaluationFileName.split("__");
-		Functions.writeStringToFile(inpOutputPath + fileName[0] + "_eva__0",
+		String [] pathName = evaluationFileName.split("__");			
+		String pathString = pathName[0]+"_"+pathName[1];
+		String [] fileName = pathString.split("\\\\"); 		
+		Functions.writeStringToFile(inpOutputPath + fileName[fileName.length-1] + "_eva__0",
 				evaString);
 	}
 
@@ -436,11 +438,13 @@ public class Evaluation {
 	}
 
 	/*
-	 * main
+	 * main"C:\Users\Mannheimer\Desktop\Bachelor\Evaluation\balachandran_scored__3.txt"
 	 */
 	public static void main(String[] args) throws IOException {
 		startEvaluation();
 		// C:\Users\Mannheimer\Desktop\Bachelor\Evaluation\venu_combined_scored__0.txt
+		//C:\Users\Mannheimer\Desktop\Bachelor\Evaluation\
+		//C:\Users\Mannheimer\Desktop\Bachelor\Evaluation\balachandran_scored__3.txt
 	}
 
 }

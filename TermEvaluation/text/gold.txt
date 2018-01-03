@@ -1,0 +1,84 @@
+autopull
+batch
+BGE
+bottle
+box
+calibration
+calibrator
+CCC
+cell
+configuration
+consolidation
+consumable
+control
+correction
+customer
+deal
+decomposition
+DMS
+duration
+environment
+event
+FOC
+GDC
+instrument
+kit
+lease
+material
+MPA
+MPE
+negotiation
+note
+opportunity
+organization
+pack
+PL4
+PMR
+PMT
+pool
+price
+pricing
+quantification
+quantificator
+reagent
+reportable
+rotor
+rounding
+RTD 
+sample
+scenario
+service
+setting
+shift
+system
+test
+threshold
+uncommitted
+workload
+additional asset
+admin tool
+associated item
+buying group
+calculation base
+contract model
+cooled stability
+delivered quantity
+disposal frequency
+extension factor
+finance option
+free of charge
+frozen handling
+frozen mode
+list view
+manual entry
+master data
+negotiated quantity
+optimization mode
+payment model
+product family
+stability handling
+text item
+upper grid
+vial size
+volume break
+zero quantity

@@ -486,7 +486,6 @@ public class Venu {
 		return inpTerms;
 	}
 
-	@SuppressWarnings("resource")
 	public static void startVenuWithUserInput() throws IOException {
 		// initialize user input
 		InputStreamReader isr = new InputStreamReader(System.in);

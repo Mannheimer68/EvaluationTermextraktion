@@ -95,8 +95,14 @@ public class Evaluation {
 		// read array in ArrayList
 		for (int i = 0; i < termArray.length; i++) {
 			String[] termWithScore = termArray[i].split("_");
-			termList.add(new Term(termWithScore[0].replaceAll("\r", ""), Double
-					.parseDouble(termWithScore[1].replaceAll("\r", ""))));
+			String term = termWithScore[0].replaceAll("\r", "");
+			double score = 0;
+			//if there was an score passed
+			if (termWithScore.length > 1) {
+				score = Double.parseDouble(termWithScore[1]
+						.replaceAll("\r", ""));
+			}
+			termList.add(new Term(term, score));
 		}
 		return termList;
 	}
@@ -123,7 +129,6 @@ public class Evaluation {
 
 	/*
 	 * set file name given by the filePath e.g. file path
-	 * "C:/User/Desktop/testfile.txt leads to the name "testfile"
 	 */
 	public static void setEvaluationFileName(String inpFilePath) {
 		String[] path = inpFilePath.split("/");
@@ -247,13 +252,6 @@ public class Evaluation {
 
 	/*
 	 * Returns a string of max scores 
-	 * Form: 
-	 * 		The algorithm found 123 terms. 
-	 * 		The gold standard is 125 terms large. 
-	 * 		The highest precision of 0.10494623655913979 is reached by using Top 300 terms"C:\Users\Mannheimer\Desktop\Bachelor\Evaluation\balachandran_scored__3.txt". 
-	 * 		The highest recall of 0.44757094757094756 is reached by using Top 990 terms. 
-	 * 		The highest f1 score of 0.15550124292369075 is reached by using Top 990 terms.
-	 * 		========================================
 	 */
 	public static String getMaxStatisticAsString(
 			ArrayList<EvaluationData> inpEvaData, int inpGoldSize) {
@@ -285,13 +283,7 @@ public class Evaluation {
 	}
 
 	/*
-	 * saves the evaluation data 
-	 * Form: 
-	 * 		=====Top N Terms: 30 
-	 * 		Precision: 0.016666666666666666 
-	 * 		Recall:    0.003968253968253968 
-	 * 		F1-Score:  0.006410256410256409 
-	 * 		=========================
+	 * saves the evaluation data
 	 */
 	public static void saveEvaluationData(ArrayList<EvaluationData> inpEvaData,
 			int inpGoldSize, String inpOutputPath) throws IOException {
@@ -316,11 +308,11 @@ public class Evaluation {
 					+ System.lineSeparator();
 		}
 		// write file from the given output string
-		String [] pathName = evaluationFileName.split("__");			
-		String pathString = pathName[0]+"_"+pathName[1];
-		String [] fileName = pathString.split("\\\\"); 		
-		Functions.writeStringToFile(inpOutputPath + fileName[fileName.length-1] + "_eva__0",
-				evaString);
+		String[] pathName = evaluationFileName.split("__");
+		String pathString = pathName[0] + "_" + pathName[1];
+		String[] fileName = pathString.split("\\\\");
+		Functions.writeStringToFile(inpOutputPath
+				+ fileName[fileName.length - 1] + "_eva__0", evaString);
 	}
 
 	/*
@@ -408,7 +400,7 @@ public class Evaluation {
 		//
 		// input of the output directory file
 		//
-		System.out.print("3. Please enter the an output directory:"
+		System.out.print("3. Please enter the output directory:"
 				+ System.lineSeparator()
 				+ "(Leave empty to use class directory)");
 		// get input from user
@@ -441,7 +433,7 @@ public class Evaluation {
 	 * main
 	 */
 	public static void main(String[] args) throws IOException {
-		startEvaluation();		
+		startEvaluation();
 	}
 
 }

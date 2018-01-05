@@ -18,12 +18,16 @@ import edu.stanford.nlp.util.CoreMap;
 import java.io.IOException;
 
 public class Balachandran {
+
+	private static String nGrams;
+
 	/*
 	 * Counts the occurrences of a given term inside a given text Input: term
 	 * and text
 	 */
 	static Integer getCountOccurences(String inpTerm, String inpText) {
-		return StringUtils.countMatches(inpText.toLowerCase(), inpTerm.toLowerCase());
+		return StringUtils.countMatches(inpText.toLowerCase(),
+				inpTerm.toLowerCase());
 	}
 
 	/*
@@ -38,53 +42,63 @@ public class Balachandran {
 			// rule1: 3-gram rule
 			// save length of term list before applying the rule
 			termListLength = inpTerms.size();
-			// apply rule
-			// terms = rule1(singleSentence, terms, i);
-			// if the rule adds a term to the list, increase the index
-			if (inpTerms.size() > termListLength) {
-				if (i + 3 < inpSingleSentence.size()) {
-					i = i + 3;
+			// apply rule if entered nGram it suits the user input
+			if (nGrams.equals("3")) {
+				inpTerms = rule1(inpSingleSentence, inpTerms, i);
+				// if the rule adds a term to the list, increase the index
+				if (inpTerms.size() > termListLength) {
+					if (i + 3 < inpSingleSentence.size()) {
+						i = i + 3;
+					}
 				}
 			}
 			// rule2: 3-gram rule
 			// save length of term list before applying the rule
 			termListLength = inpTerms.size();
-			// apply rule
-			// terms = rule2(singleSentence, terms, i);
-			// if the rule adds a term to the list, increase the index
-			if (inpTerms.size() > termListLength) {
-				if (i + 3 < inpSingleSentence.size()) {
-					i = i + 3;
+			// apply rule if entered nGram it suits the user input
+			if (nGrams.equals("3")) {
+				inpTerms = rule2(inpSingleSentence, inpTerms, i);
+				// if the rule adds a term to the list, increase the index
+				if (inpTerms.size() > termListLength) {
+					if (i + 3 < inpSingleSentence.size()) {
+						i = i + 3;
+					}
 				}
 			}
 			// rule3: 2-gram rule
 			// save length of term list before applying the rule
 			termListLength = inpTerms.size();
-			// apply rule
-			inpTerms = rule3(inpSingleSentence, inpTerms, i);
-			// if the rule adds a term to the list, increase the index
-			if (inpTerms.size() > termListLength) {
-				if (i + 3 < inpSingleSentence.size()) {
-					i = i + 3;
+			// apply rule if entered nGram it suits the user input
+			if (nGrams.equals("3") || nGrams.equals("2")) {
+				inpTerms = rule3(inpSingleSentence, inpTerms, i);
+				// if the rule adds a term to the list, increase the index
+				if (inpTerms.size() > termListLength) {
+					if (i + 3 < inpSingleSentence.size()) {
+						i = i + 3;
+					}
 				}
 			}
 
 			// rule4: 2-gram rule
 			// save length of term list before applying the rule
 			termListLength = inpTerms.size();
-			// apply rule
-			inpTerms = rule4(inpSingleSentence,inpTerms, i);
-			// if the rule adds a term to the list, increase the index
-			if (inpTerms.size() > termListLength) {
-				if (i + 3 < inpSingleSentence.size()) {
-					i = i + 3;
+			// apply rule if entered nGram it suits the user input
+			if (nGrams.equals("3") || nGrams.equals("2")) {
+				inpTerms = rule4(inpSingleSentence, inpTerms, i);
+				// if the rule adds a term to the list, increase the index
+				if (inpTerms.size() > termListLength) {
+					if (i + 3 < inpSingleSentence.size()) {
+						i = i + 3;
+					}
 				}
 			}
-
 			// rul5: unigram rule
 			// apply rule (automatic increase of index by for-loop)
-
-			inpTerms = rule5(inpSingleSentence, inpTerms, i);
+			// apply rule if entered nGram it suits the user input
+			// apply rule if entered nGram it suits the user input
+			if (nGrams.equals("3") || nGrams.equals("2") || nGrams.equals("1")) {
+				inpTerms = rule5(inpSingleSentence, inpTerms, i);
+			}
 		}
 
 		// delete terms which contains noise
@@ -94,12 +108,13 @@ public class Balachandran {
 
 	/*
 	 * Rule 5 of Balachandran et al. Add words to the term list if P2 = NN, NNS,
-	 * NNP or NNPS
+	 * NNP or NNPS extract 1-grams
 	 */
-	static ArrayList<String> rule5(ArrayList<Sentence> inpSentence, ArrayList<String> inpTerm,
-			int i) {
+	static ArrayList<String> rule5(ArrayList<Sentence> inpSentence,
+			ArrayList<String> inpTerm, int i) {
 		// check if terms fit the rule
-		if (inpSentence.get(i - 2).pos.equals("NN") || inpSentence.get(i - 2).pos.equals("NNS")
+		if (inpSentence.get(i - 2).pos.equals("NN")
+				|| inpSentence.get(i - 2).pos.equals("NNS")
 				|| inpSentence.get(i - 2).pos.equals("NNP")
 				|| inpSentence.get(i - 2).pos.equals("NNPS")) {
 
@@ -116,17 +131,19 @@ public class Balachandran {
 
 	/*
 	 * Rule 4 of Balachandran et al. Add words to the term list if P0 = NN, NNS,
-	 * NNP or NNPS and P1 = JJ, JJR or JJS
+	 * NNP or NNPS and P1 = JJ, JJR or JJS extract 2-grams
 	 */
-	static ArrayList<String> rule4(ArrayList<Sentence> inpSentence, ArrayList<String> inpTerm,
-			int i) {
+	static ArrayList<String> rule4(ArrayList<Sentence> inpSentence,
+			ArrayList<String> inpTerm, int i) {
 		String nTerm;
 		// check if terms fit the rule
-		if ((inpSentence.get(i).pos.equals("NN") || inpSentence.get(i).pos.equals("NNS")
-				|| inpSentence.get(i).pos.equals("NNP") || inpSentence.get(i).pos.equals("NNPS"))
+		if ((inpSentence.get(i).pos.equals("NN")
+				|| inpSentence.get(i).pos.equals("NNS")
+				|| inpSentence.get(i).pos.equals("NNP") || inpSentence.get(i).pos
+				.equals("NNPS"))
 				&& (inpSentence.get(i - 1).pos.equals("JJ")
-						|| inpSentence.get(i - 1).pos.equals("JJR") || inpSentence.get(i - 1).pos
-						.equals("JJS"))) {
+						|| inpSentence.get(i - 1).pos.equals("JJR") || inpSentence
+							.get(i - 1).pos.equals("JJS"))) {
 			nTerm = inpSentence.get(i - 1).word + " " + inpSentence.get(i).word;
 			if (inpTerm.contains(nTerm.toLowerCase())) {
 				// do not add term if it already exists in the term list
@@ -141,18 +158,20 @@ public class Balachandran {
 
 	/*
 	 * Rule 3 of Balachandran et al. Add words to the term list if P0 = NN, NNS,
-	 * NNP or NNPS and P1 = NN, NNS or NNPS
+	 * NNP or NNPS and P1 = NN, NNS or NNPS extract 2-grams
 	 */
-	static ArrayList<String> rule3(ArrayList<Sentence> inpSentence, ArrayList<String> inpTerm,
-			int i) {
+	static ArrayList<String> rule3(ArrayList<Sentence> inpSentence,
+			ArrayList<String> inpTerm, int i) {
 		String nTerm;
 		// check if terms fit the rule
-		if ((inpSentence.get(i).pos.equals("NN") || inpSentence.get(i).pos.equals("NNS")
-				|| inpSentence.get(i).pos.equals("NNP") || inpSentence.get(i).pos.equals("NNPS"))
+		if ((inpSentence.get(i).pos.equals("NN")
+				|| inpSentence.get(i).pos.equals("NNS")
+				|| inpSentence.get(i).pos.equals("NNP") || inpSentence.get(i).pos
+				.equals("NNPS"))
 				&& (inpSentence.get(i - 1).pos.equals("NN")
 						|| inpSentence.get(i - 1).pos.equals("NNS")
-						|| inpSentence.get(i - 1).pos.equals("NNP") || inpSentence.get(i - 1).pos
-						.equals("NNPS"))) {
+						|| inpSentence.get(i - 1).pos.equals("NNP") || inpSentence
+							.get(i - 1).pos.equals("NNPS"))) {
 			nTerm = inpSentence.get(i - 1).word + " " + inpSentence.get(i).word;
 			if (inpTerm.contains(nTerm.toLowerCase())) {
 				// do not add term if it already exists in the term list
@@ -167,19 +186,22 @@ public class Balachandran {
 
 	/*
 	 * Rule 2 of Balachandran et al. Add words to the term list if P0 = NN, NNS,
-	 * NNP or NNPS and P2 = NN, NNS or NNPS and P1 = any tag
+	 * NNP or NNPS and P2 = NN, NNS or NNPS and P1 = any tag extract 3-grams
 	 */
-	static ArrayList<String> rule2(ArrayList<Sentence> inpSentence, ArrayList<String> inpTerm,
-			int i) {
+	static ArrayList<String> rule2(ArrayList<Sentence> inpSentence,
+			ArrayList<String> inpTerm, int i) {
 		String nTerm;
 		// check if terms fit the rule
-		if ((inpSentence.get(i).pos.equals("NN") || inpSentence.get(i).pos.equals("NNS")
-				|| inpSentence.get(i).pos.equals("NNP") || inpSentence.get(i).pos.equals("NNPS"))
+		if ((inpSentence.get(i).pos.equals("NN")
+				|| inpSentence.get(i).pos.equals("NNS")
+				|| inpSentence.get(i).pos.equals("NNP") || inpSentence.get(i).pos
+				.equals("NNPS"))
 				&& (inpSentence.get(i - 2).pos.equals("NN")
 						|| inpSentence.get(i - 2).pos.equals("NNS")
-						|| inpSentence.get(i - 2).pos.equals("NNP") || inpSentence.get(i - 2).pos
-						.equals("NNPS"))) {
-			nTerm = inpSentence.get(i - 2).word + " " + inpSentence.get(i - 1).word + " "
+						|| inpSentence.get(i - 2).pos.equals("NNP") || inpSentence
+							.get(i - 2).pos.equals("NNPS"))) {
+			nTerm = inpSentence.get(i - 2).word + " "
+					+ inpSentence.get(i - 1).word + " "
 					+ inpSentence.get(i).word;
 			if (inpTerm.contains(nTerm.toLowerCase())) {
 				// do not add term if it already exists in the term list
@@ -194,22 +216,26 @@ public class Balachandran {
 
 	/*
 	 * Rule 1 of Balachandran et al. Add words to the term list if P0 = NN, NNS,
-	 * NNP or NNPS and P1 = NN, NNS or NNPS and P2 = JJ, JJR or JJS
+	 * NNP or NNPS and P1 = NN, NNS or NNPS and P2 = JJ, JJR or JJS extract
+	 * 3-grams
 	 */
-	static ArrayList<String> rule1(ArrayList<Sentence> inpSentence, ArrayList<String> inpTerm,
-			int i) {
+	static ArrayList<String> rule1(ArrayList<Sentence> inpSentence,
+			ArrayList<String> inpTerm, int i) {
 		String nTerm;
 		// check if terms fit the rule
-		if ((inpSentence.get(i).pos.equals("NN") || inpSentence.get(i).pos.equals("NNS")
-				|| inpSentence.get(i).pos.equals("NNP") || inpSentence.get(i).pos.equals("NNPS"))
+		if ((inpSentence.get(i).pos.equals("NN")
+				|| inpSentence.get(i).pos.equals("NNS")
+				|| inpSentence.get(i).pos.equals("NNP") || inpSentence.get(i).pos
+				.equals("NNPS"))
 				&& (inpSentence.get(i - 1).pos.equals("NN")
 						|| inpSentence.get(i - 1).pos.equals("NNS")
-						|| inpSentence.get(i - 1).pos.equals("NNP") || inpSentence.get(i - 1).pos
-						.equals("NNPS"))
+						|| inpSentence.get(i - 1).pos.equals("NNP") || inpSentence
+							.get(i - 1).pos.equals("NNPS"))
 				&& (inpSentence.get(i - 2).pos.equals("JJ")
-						|| inpSentence.get(i - 2).pos.equals("JJR") || inpSentence.get(i - 2).pos
-						.equals("JJS"))) {
-			nTerm = inpSentence.get(i - 2).word + " " + inpSentence.get(i - 1).word + " "
+						|| inpSentence.get(i - 2).pos.equals("JJR") || inpSentence
+							.get(i - 2).pos.equals("JJS"))) {
+			nTerm = inpSentence.get(i - 2).word + " "
+					+ inpSentence.get(i - 1).word + " "
 					+ inpSentence.get(i).word;
 			if (inpTerm.contains(nTerm.toLowerCase())) {
 				// do not add term if it already exists in the term list
@@ -279,7 +305,7 @@ public class Balachandran {
 			// count the occurrence of the original term inside the text if it
 			// is a multi term
 			if (inpLemmatizedTerm.get(i).term.replace(" ", "").length() != inpLemmatizedTerm
-					.get(i).term.length()) {				
+					.get(i).term.length()) {
 				counter = getCountOccurences(
 						inpLemmatizedTerm.get(i).lemmatizedTerm, inpText);
 			}
@@ -296,13 +322,15 @@ public class Balachandran {
 			// if the lemmatized unigram was not found search for the original
 			// word
 			if (counter == 0) {
-				counter = getCountOccurences(inpLemmatizedTerm.get(i).term, inpText);
+				counter = getCountOccurences(inpLemmatizedTerm.get(i).term,
+						inpText);
 			}
 			// add the counted values to the lemmatized term structure and the
 			// according frequency type
 			switch (inpFrequencyType) {
 			case 0:
-				inpLemmatizedTerm.get(i).frequencyText = counter / counterAllWords;
+				inpLemmatizedTerm.get(i).frequencyText = counter
+						/ counterAllWords;
 				break;
 			case 1:
 				inpLemmatizedTerm.get(i).frequencyContrastDomain1 = (counter + 1)
@@ -312,7 +340,7 @@ public class Balachandran {
 				inpLemmatizedTerm.get(i).frequencyContrastDomain2 = (counter + 1)
 						/ counterAllWords;
 				break;
-			}			
+			}
 		}
 		return inpLemmatizedTerm;
 	}
@@ -377,16 +405,16 @@ public class Balachandran {
 	/*
 	 * Starts the algorithm of Balachandran et al.
 	 */
-	static void startBalachandran(String inpTextPath, String inpCompareText1Path,
-			String inpCompareText2Path, String inpOutputPath, int inpPrintStatus)
-			throws IOException {
+	static void startBalachandran(String inpTextPath,
+			String inpCompareText1Path, String inpCompareText2Path,
+			String inpOutputPath, int inpPrintStatus) throws IOException {
 		// read the transfered file path and write into string
 		String text = Functions.readFile(inpTextPath, Charset.defaultCharset());
 		String compareText1 = Functions.readFile(inpCompareText1Path,
 				Charset.defaultCharset());
 		String compareText2 = Functions.readFile(inpCompareText2Path,
 				Charset.defaultCharset());
-		// extract the relevant terms of the given text
+		// apply pos tagger andextract the relevant terms of the given text by the given rules
 		ArrayList<String> terms = getRelevantTerms(text);
 		// lemmatize the terms
 		ArrayList<Term> lemmatizedTerms = getLemmatizedTermList(terms);
@@ -399,9 +427,11 @@ public class Balachandran {
 		// add the score based on the occurrences
 		lemmatizedTerms = addScore(lemmatizedTerms);
 		lemmatizedTerms = sortValuesByScore(lemmatizedTerms);
-		Functions.writeStringToFile(inpOutputPath + "balachandran_scored__0",
+		Functions.writeStringToFile(inpOutputPath + "balachandran_"+nGrams+"-gram_scored__0",
 				Functions.addLemmatizedTermsWithScoreToString(lemmatizedTerms));
-		if (inpPrintStatus == 1) {
+		Functions.writeStringToFile(inpOutputPath + "balachandran_"+nGrams+"-gram__0",
+				Functions.addLemmatizedTermsToString(lemmatizedTerms));
+		if (inpPrintStatus == 1) {			
 			System.out.println("Sorted:");
 			for (Term term : lemmatizedTerms) {
 				System.out
@@ -421,8 +451,10 @@ public class Balachandran {
 	private static ArrayList<String> deleteNoise(ArrayList<String> inpTerms) {
 		for (int i = 0; i < inpTerms.size(); i++) {
 			if (inpTerms.get(i).contains("%") || inpTerms.get(i).contains("*")
-					|| inpTerms.get(i).contains("<") || inpTerms.get(i).contains(">")
-					|| inpTerms.get(i).contains("=")) {
+					|| inpTerms.get(i).contains("<")
+					|| inpTerms.get(i).contains(">")
+					|| inpTerms.get(i).contains("=")
+					|| inpTerms.get(i).contains("''")) {
 				inpTerms.remove(i);
 			}
 		}
@@ -483,11 +515,12 @@ public class Balachandran {
 				System.out
 						.print("File does not exist. Please enter correct file path for the plain text:"
 								+ System.lineSeparator());
+				textPath = ""; //reset the input variable
 				textPath = br.readLine();
 				textPath = textPath.replace("\\", File.separator);
 				textFile = new File(textPath);
 			}
-		}		
+		}
 		// input if the first contrast text
 		//
 		System.out
@@ -513,6 +546,7 @@ public class Balachandran {
 				System.out
 						.print("File does not exist or is equal to previous file. Please enter a correct file path for the first contrast text:"
 								+ System.lineSeparator());
+				contrast1Path = ""; //reset the input variable
 				contrast1Path = br.readLine();
 				contrast1Path = contrast1Path.replace("\\", File.separator);
 				contrast1File = new File(contrast1Path);
@@ -544,11 +578,12 @@ public class Balachandran {
 				System.out
 						.print("File does not exist or is equal to previous file. Please enter a correct file path for the second contrast text:"
 								+ System.lineSeparator());
+				contrast2Path = ""; //reset the input variable
 				contrast2Path = br.readLine();
 				contrast2Path = contrast2Path.replace("\\", File.separator);
 				contrast2File = new File(contrast2Path);
 			}
-		}		
+		}
 		// input of the output directory file
 		//
 		System.out.print("4. Please enter an OUTPUT DIRECTORY:"
@@ -569,6 +604,7 @@ public class Balachandran {
 				System.out
 						.print("==>Please enter a correct directory. File names are not allowed"
 								+ System.lineSeparator());
+				outputPath = ""; //reset the input variable
 				outputPath = br.readLine();
 				outputPath = outputPath.replace("\\", File.separator);
 				outputFile = new File(outputPath);
@@ -580,7 +616,22 @@ public class Balachandran {
 		// get input from user
 		//
 		System.out
-				.print("5. Do you want to PRINT the output(0 = No | 1 = Yes)?"
+				.print("5. Enter the type of N-Grams you want to extract:"
+						+ System.lineSeparator()
+						+ "(1 = Only Unigrams | 2 = Unigrams & Bigramms | 3 = Unigrams,Bigramms & Trigrams)"
+						+ System.lineSeparator());
+		nGrams = br.readLine();
+		// check if user input is either "1" or "2" or "3"
+		while (!nGrams.equals("1") && !nGrams.equals("2")
+				&& !nGrams.equals("3")) {
+			System.out.print("Please enter only 1, 2 or 3"
+					+ System.lineSeparator());
+			nGrams = br.readLine();
+		}
+		// get input from user
+		//
+		System.out
+				.print("6. Do you want to PRINT the output(0 = No | 1 = Yes)?"
 						+ System.lineSeparator()
 						+ "(Data will still be saved to the output directory)"
 						+ System.lineSeparator());

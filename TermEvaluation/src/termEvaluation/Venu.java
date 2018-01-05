@@ -401,7 +401,7 @@ public class Venu {
 	 * which should be analyzed input param 2: print status (0 = do not print, 1
 	 * = print)
 	 */
-	public static void startVenu(String inpTextPath, String inpOutputPath,
+	public static void startVenu(String inpTextPath, String inpOutputPath, String inpScored,
 			int inpPrintStatus) throws IOException {
 		// read file and save to text
 		String text = Functions.readFile(inpTextPath, Charset.defaultCharset());
@@ -434,12 +434,24 @@ public class Venu {
 		scoredTermList = sortValuesByScore(scoredTermList);
 		printResults();
 		// write files to disk
+		//create unscored output files
+		if (inpScored.equals("0")){
+			Functions.writeStringToFile(inpOutputPath + "venu_nouns__0",
+					Functions.addTermsToString(scoredNounList));
+			Functions.writeStringToFile(inpOutputPath + "venu_combined__0",
+					Functions.addTermsToString(scoredTermList));
+			Functions.writeStringToFile(inpOutputPath + "venu_ssr__0",
+					Functions.addTermsToString(scoredSSRList));			
+		}
+		//create scored output files
+		if (inpScored.equals("1")){
 		Functions.writeStringToFile(inpOutputPath + "venu_nouns_scored__0",
-				Functions.addTermsWithScoreToString(scoredNounList));
+				Functions.addTermsWithScoreToString(scoredNounList));		
 		Functions.writeStringToFile(inpOutputPath + "venu_combined_scored__0",
-				Functions.addTermsWithScoreToString(scoredTermList));
+				Functions.addTermsWithScoreToString(scoredTermList));		
 		Functions.writeStringToFile(inpOutputPath + "venu_ssr_scored__0",
 				Functions.addTermsWithScoreToString(scoredSSRList));
+		}
 	}
 
 	/*
@@ -534,9 +546,23 @@ public class Venu {
 					+ System.lineSeparator());
 		}
 		// get input from user
+				//
+				System.out
+						.print("3. Do you want to save scored or unscored terms in the output files"
+								+ System.lineSeparator()
+								+ "(0 = unscored | 1 = scored)");
+				String inputScored = br.readLine();
+				// check if user input is either "1" or "0"
+				while (!inputScored.equals("0") && !inputScored.equals("1")) {
+					System.out
+							.println("Please enter '0' (zero) for 'unscored' and '1'(one) for scored:");
+					inputScored = br.readLine();
+				}
+				
+		// get input from user
 		//
 		System.out
-				.print("3. Do you want to print the output(0 = No | 1 = Yes) ?");
+				.print("4. Do you want to print the output(0 = No | 1 = Yes) ?");
 		String inputPrint = br.readLine();
 		// check if user input is either "1" or "0"
 		while (!inputPrint.equals("0") && !inputPrint.equals("1")) {
@@ -547,10 +573,10 @@ public class Venu {
 		System.out.println("");
 
 		if (inputPrint.equals("0")) {
-			startVenu(filePath, outputPath, 0);
+			startVenu(filePath, outputPath,inputScored, 0);
 		}
 		if (inputPrint.equals("1")) {
-			startVenu(filePath, outputPath, 1);
+			startVenu(filePath, outputPath,inputScored, 1);
 		}
 	}
 

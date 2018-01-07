@@ -252,8 +252,7 @@ public class Balachandran {
 		ArrayList<Term> lemmatizedTerms = new ArrayList<Term>();
 		for (int i = 0; i < inpTermList.size(); i++) {
 			String term = inpTermList.get(i).toString();
-			String lemmatizedTerm = getLemmatizedTerm(inpTermList.get(i)
-					.toString());
+			String lemmatizedTerm = getLemmatizedTerm(inpTermList.get(i).toString());
 			// only add the lemmatized terms once
 			int checkExistence = 0;
 			for (Term t : lemmatizedTerms) {
@@ -436,8 +435,8 @@ public class Balachandran {
 			for (Term term : lemmatizedTerms) {
 				System.out
 						.println(String
-								.format("The term [%s] lemma [%s] has a score of [%s] with FREQ [%s] CP1 [%s] CP2 [%s]",
-										term.term, term.lemmatizedTerm,
+								.format("The term [%s] has a score of [%s] with P(Text)[%s], P(CP1) [%s] and P(CP2) [%s]",
+										term.lemmatizedTerm,
 										term.score, term.frequencyText,
 										term.frequencyContrastDomain1,
 										term.frequencyContrastDomain2));
@@ -643,6 +642,7 @@ public class Balachandran {
 							+ System.lineSeparator());
 			inputPrint = br.readLine();
 		}
+		final long timeStart = System.currentTimeMillis(); //calculate the duration of the programm
 		if (inputPrint.equals("0")) {
 			startBalachandran(textPath, contrast1Path, contrast2Path,
 					outputPath, 0);
@@ -651,6 +651,8 @@ public class Balachandran {
 			startBalachandran(textPath, contrast1Path, contrast2Path,
 					outputPath, 1);
 		}
+		final long timeEnd = System.currentTimeMillis();
+		System.out.println("Duration of run:" + (timeEnd - timeStart)); // print the duration of the programm
 	}
 
 	/*

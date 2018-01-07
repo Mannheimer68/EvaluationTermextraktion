@@ -38,6 +38,7 @@ public class Venu {
 	private static ArrayList<Term> scoredTermList = new ArrayList<Term>();
 	private static ArrayList<String> noiseTerms = new ArrayList<String>();
 	private static int printStatus = 0;
+	private static String nGrams;
 
 	/*
 	 * get unique entries of the list
@@ -361,7 +362,7 @@ public class Venu {
 											.toString()
 											.substring(indexBeginString,
 													indexEndString)
-											.replaceAll(" ", "").length() > 2
+											.replaceAll(" ", "").length() > Integer.valueOf(nGrams)
 							|| inpText
 									.toString()
 									.substring(indexBeginString, indexEndString)
@@ -436,21 +437,21 @@ public class Venu {
 		// write files to disk
 		//create unscored output files
 		if (inpScored.equals("0")){
-			Functions.writeStringToFile(inpOutputPath + "venu_nouns__0",
-					Functions.addTermsToString(scoredNounList));
-			Functions.writeStringToFile(inpOutputPath + "venu_combined__0",
+			Functions.writeStringToFile(inpOutputPath + "venu_"+nGrams+"-gram_nouns__0",
+					Functions.addTermsToString(scoredNounList));		
+			Functions.writeStringToFile(inpOutputPath + "venu_"+nGrams+"-gram_ssr__0",
+					Functions.addTermsToString(scoredSSRList));
+			Functions.writeStringToFile(inpOutputPath + "venu_"+nGrams+"-gram_combined__0",
 					Functions.addTermsToString(scoredTermList));
-			Functions.writeStringToFile(inpOutputPath + "venu_ssr__0",
-					Functions.addTermsToString(scoredSSRList));			
 		}
 		//create scored output files
 		if (inpScored.equals("1")){
-		Functions.writeStringToFile(inpOutputPath + "venu_nouns_scored__0",
-				Functions.addTermsWithScoreToString(scoredNounList));		
-		Functions.writeStringToFile(inpOutputPath + "venu_combined_scored__0",
-				Functions.addTermsWithScoreToString(scoredTermList));		
-		Functions.writeStringToFile(inpOutputPath + "venu_ssr_scored__0",
+		Functions.writeStringToFile(inpOutputPath + "venu_"+nGrams+"-gram_nouns_scored__0",
+				Functions.addTermsWithScoreToString(scoredNounList));				
+		Functions.writeStringToFile(inpOutputPath + "venu_"+nGrams+"-gram_ssr_scored__0",
 				Functions.addTermsWithScoreToString(scoredSSRList));
+		Functions.writeStringToFile(inpOutputPath + "venu_"+nGrams+"-gram_combined_scored__0",
+				Functions.addTermsWithScoreToString(scoredTermList));
 		}
 	}
 
@@ -495,7 +496,7 @@ public class Venu {
 		BufferedReader br = new BufferedReader(isr);
 		System.out.println("1. Please enter the file path of the PLAIN text:"
 				+ System.lineSeparator() + "(Leave empty to use example text)");
-		// get input from user
+		// ask for input file
 		String filePath = br.readLine();
 		// replace back slashes with file separator
 		filePath = filePath.replace("\\", File.separator);
@@ -518,8 +519,7 @@ public class Venu {
 			}
 			System.out.println("");
 		}		
-		// input of the output directory file
-		//
+		// ask for the output directory
 		System.out.print("2. Please enter an OUTPUT DIRECTORY :"
 				+ System.lineSeparator()
 				+ "(Leave empty if you want to use the class folder)");
@@ -545,10 +545,25 @@ public class Venu {
 			System.out.println("==>Standard path is used"
 					+ System.lineSeparator());
 		}
-		// get input from user
-				//
+		// ask for term length (n-gram)
 				System.out
-						.print("3. Do you want to save scored or unscored terms in the output files"
+						.print("3. Enter the type of N-Grams you want to extract:"
+								+ System.lineSeparator()
+								+ "( 2 = Unigrams & Bigramms | 3 = Unigrams,Bigramms & Trigrams | 4 = Up to 4-grams)"
+								+ System.lineSeparator());
+				nGrams = br.readLine();
+				// check if user input is either "1" or "2" or "3"
+				while (!nGrams.equals("2") && !nGrams.equals("3")
+						&& !nGrams.equals("4")) {
+					System.out.print("Please enter only 2, 3 or 4"
+							+ System.lineSeparator());
+					nGrams = br.readLine();
+				}
+		
+		
+		// ask for scored or unscored output files				
+				System.out
+						.print("4. Do you want to save scored or unscored terms in the output files"
 								+ System.lineSeparator()
 								+ "(0 = unscored | 1 = scored)");
 				String inputScored = br.readLine();
@@ -559,10 +574,9 @@ public class Venu {
 					inputScored = br.readLine();
 				}
 				
-		// get input from user
-		//
+		// ask for console print
 		System.out
-				.print("4. Do you want to print the output(0 = No | 1 = Yes) ?");
+				.print("5. Do you want to print the output(0 = No | 1 = Yes) ?");
 		String inputPrint = br.readLine();
 		// check if user input is either "1" or "0"
 		while (!inputPrint.equals("0") && !inputPrint.equals("1")) {
@@ -571,13 +585,15 @@ public class Venu {
 			inputPrint = br.readLine();
 		}
 		System.out.println("");
-
+		final long timeStart = System.currentTimeMillis(); //calculate the duration of the programm
 		if (inputPrint.equals("0")) {
 			startVenu(filePath, outputPath,inputScored, 0);
 		}
 		if (inputPrint.equals("1")) {
 			startVenu(filePath, outputPath,inputScored, 1);
 		}
+		final long timeEnd = System.currentTimeMillis();
+		System.out.println("Duration of run:" + (timeEnd - timeStart)); // print the duration of the programm	
 	}
 
 	/*

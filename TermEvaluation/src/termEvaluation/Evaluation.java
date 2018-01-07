@@ -308,11 +308,17 @@ public class Evaluation {
 					+ System.lineSeparator();
 		}
 		// write file from the given output string
-		String[] pathName = evaluationFileName.split("__");
-		String pathString = pathName[0] + "_" + pathName[1];
+		String pathString = ""; 
+		if (evaluationFileName.contains("__")){
+			String[] pathName = evaluationFileName.split("__");
+			 pathString = pathName[0] + "_" + pathName[1];
+		}else{
+			pathString = evaluationFileName;
+		}
+		
 		String[] fileName = pathString.split("\\\\");
 		Functions.writeStringToFile(inpOutputPath
-				+ fileName[fileName.length - 1] + "_eva__0", evaString);
+				+ "eva_" + fileName[fileName.length - 1] + "__0", evaString);
 	}
 
 	/*
@@ -331,7 +337,7 @@ public class Evaluation {
 		terms = getTerms(inpTermPath);
 		// set output file name for evaluation from given term path
 		setEvaluationFileName(inpTermPath);
-		bestTerms = 10;
+		bestTerms = 1;
 		// calculate scores for top 1,2,3,4 and so on terms
 		while (bestTerms < terms.size()) {
 			// set precision, recall and f score
@@ -354,7 +360,7 @@ public class Evaluation {
 		InputStreamReader isr = new InputStreamReader(System.in);
 		BufferedReader br = new BufferedReader(isr);
 		System.out
-				.println("1. Please enter the file path of the scored terms:");
+				.println("1. Please enter the file path of the scored terms:"+ System.lineSeparator());
 		// get input from user
 		String filePath = br.readLine();
 		// replace back slashes with file separator
@@ -363,7 +369,7 @@ public class Evaluation {
 		// check if entered file path exist and force to enter a correct path
 		while (!testFile.exists() || !filePath.contains(".txt")) {
 			System.out.println("Path not correcet." + System.lineSeparator()
-					+ "Please enter correct file path of the scored terms:");
+					+ "Please enter correct file path of the scored terms:"+ System.lineSeparator());
 			filePath = br.readLine();
 			filePath = filePath.replace("\\", File.separator);
 			testFile = new File(filePath);
@@ -371,7 +377,7 @@ public class Evaluation {
 		System.out.println("");
 		System.out.print("2. Please enter the file path of the gold standard:"
 				+ System.lineSeparator()
-				+ "(Leave empty to use an example gold standard)");
+				+ "(Leave empty to use an example gold standard)"+ System.lineSeparator());
 		// get input from user
 		String goldPath = br.readLine();
 		// replace back slashes with file separator
@@ -402,7 +408,7 @@ public class Evaluation {
 		//
 		System.out.print("3. Please enter the output directory:"
 				+ System.lineSeparator()
-				+ "(Leave empty to use class directory)");
+				+ "(Leave empty to use class directory)"+ System.lineSeparator());
 		// get input from user
 		String outputPath = br.readLine();
 		// replace back slashes with file separator
@@ -418,7 +424,7 @@ public class Evaluation {
 					|| !outputPath.substring(outputPath.length() - 1).equals(
 							File.separator)) {
 				System.out
-						.println("==>Please enter a correct directory. File names are not allowed");
+						.println("==>Please enter a correct directory. File names are not allowed"+ System.lineSeparator());
 				outputPath = br.readLine();
 				outputPath = outputPath.replace("\\", File.separator);
 				outputFile = new File(outputPath);

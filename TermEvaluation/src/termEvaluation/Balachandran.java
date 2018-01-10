@@ -641,7 +641,7 @@ public class Balachandran {
 					.print("Please enter '0' (zero) for 'NO' and '1'(one) for yes:"
 							+ System.lineSeparator());
 			inputPrint = br.readLine();
-		}
+		} 
 		final long timeStart = System.currentTimeMillis(); //calculate the duration of the programm
 		if (inputPrint.equals("0")) {
 			startBalachandran(textPath, contrast1Path, contrast2Path,

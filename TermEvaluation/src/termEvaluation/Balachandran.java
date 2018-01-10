@@ -496,7 +496,7 @@ public class Balachandran {
 		// input of the plain text
 		//
 		System.out.print("1. Please enter the file path of the PLAIN text:"
-				+ System.lineSeparator() + "(Leave empty to use example text)");
+				+ System.lineSeparator() + "(Leave empty to use example text)"+ System.lineSeparator());
 		// get input from user
 		String textPath = br.readLine();
 		// replace back slashes with file separator

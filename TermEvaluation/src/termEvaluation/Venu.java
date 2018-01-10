@@ -495,7 +495,7 @@ public class Venu {
 		InputStreamReader isr = new InputStreamReader(System.in);
 		BufferedReader br = new BufferedReader(isr);
 		System.out.println("1. Please enter the file path of the PLAIN text:"
-				+ System.lineSeparator() + "(Leave empty to use example text)");
+				+ System.lineSeparator() + "(Leave empty to use example text)"+ System.lineSeparator());
 		// ask for input file
 		String filePath = br.readLine();
 		// replace back slashes with file separator
@@ -522,7 +522,7 @@ public class Venu {
 		// ask for the output directory
 		System.out.print("2. Please enter an OUTPUT DIRECTORY :"
 				+ System.lineSeparator()
-				+ "(Leave empty if you want to use the class folder)");
+				+ "(Leave empty if you want to use the class folder)"+ System.lineSeparator());
 		// get input from user
 		String outputPath = br.readLine();
 		// replace back slashes with file separator
@@ -535,7 +535,7 @@ public class Venu {
 					|| !outputPath.substring(outputPath.length() - 1).equals(
 							File.separator)) {
 				System.out
-						.println("Please enter a correct directory. File names are not allowed");
+						.println("Please enter a correct directory. File names are not allowed"+ System.lineSeparator());
 				outputPath = br.readLine();
 				outputPath = outputPath.replace("\\", File.separator);
 				outputFile = new File(outputPath);
@@ -565,23 +565,23 @@ public class Venu {
 				System.out
 						.print("4. Do you want to save scored or unscored terms in the output files"
 								+ System.lineSeparator()
-								+ "(0 = unscored | 1 = scored)");
+								+ "(0 = unscored | 1 = scored)"+ System.lineSeparator());
 				String inputScored = br.readLine();
 				// check if user input is either "1" or "0"
 				while (!inputScored.equals("0") && !inputScored.equals("1")) {
 					System.out
-							.println("Please enter '0' (zero) for 'unscored' and '1'(one) for scored:");
+							.println("Please enter '0' (zero) for 'unscored' and '1'(one) for scored:"+ System.lineSeparator());
 					inputScored = br.readLine();
 				}
 				
 		// ask for console print
 		System.out
-				.print("5. Do you want to print the output(0 = No | 1 = Yes) ?");
+				.print("5. Do you want to print the output(0 = No | 1 = Yes) ?"+ System.lineSeparator());
 		String inputPrint = br.readLine();
 		// check if user input is either "1" or "0"
 		while (!inputPrint.equals("0") && !inputPrint.equals("1")) {
 			System.out
-					.println("Please enter '0' (zero) for 'NO' and '1'(one) for yes:");
+					.println("Please enter '0' (zero) for 'NO' and '1'(one) for yes:"+ System.lineSeparator());
 			inputPrint = br.readLine();
 		}
 		System.out.println("");
